@@ -1,0 +1,23 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-11-04T18:52:00Z"},
+  "title": "Orbitly Platform Redesign",
+  "launch": {"view": "focused", "file": "App.dc.html"},
+  "pages": [],
+  "boards": {
+    "App.dc.html": {"x": 0, "y": 2240, "w": 1440, "h": 1060, "title": "Working prototype (all features)", "expand": "fill", "is_interactive": true},
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 1060, "title": "Dashboard", "expand": "fill", "is_interactive": true},
+    "Board.dc.html": {"x": 1520, "y": 0, "w": 1440, "h": 1060, "title": "Project Board", "expand": "fill", "is_interactive": true},
+    "Timeline.dc.html": {"x": 3040, "y": 0, "w": 1440, "h": 900, "title": "Timeline", "expand": "fill", "is_interactive": true},
+    "Projects.dc.html": {"x": 0, "y": 1180, "w": 1440, "h": 820, "title": "Projects", "expand": "fill", "is_interactive": true},
+    "TaskDetail.dc.html": {"x": 1520, "y": 1180, "w": 960, "h": 820, "title": "Task Detail Drawer", "is_interactive": true}
+  },
+  "order": ["App.dc.html", "Main.dc.html", "Board.dc.html", "Timeline.dc.html", "Projects.dc.html", "TaskDetail.dc.html"],
+  "notes": {
+    "t2": {"x": 0, "y": 2000, "text": "Working prototype — press Play, everything is live", "kind": "title1", "maxW": 1440},
+    "s2": {"x": 1520, "y": 2240, "w": 560, "text": "One artboard with the whole app wired to state: dashboard, projects (create, edit, delete), board with drag-and-drop between columns, backlog, list, timeline, all-tasks view, reports, task drawer (edit every field, checklist, comments, activity, duplicate, delete with undo), filters and search, sortable columns, multi-select with bulk move/delete, a Mine quick filter, and create forms with validation. Data persists in the browser between visits; the refresh button next to the user resets the demo data.", "fill": "purple", "size": "m"},
+    "t1": {"x": 0, "y": -260, "text": "Orbitly — Global Styleguide colors", "kind": "title1", "maxW": 4480},
+    "s1": {"x": 0, "y": -150, "w": 620, "text": "Primary indigo #6B5CE7 (sidebar in Primary 700 #4A3DBB), secondary gold #F7D84E for key actions, cool neutral ground, Inter Tight for all type, JetBrains Mono for task keys. Primary = in progress, green = success/done, red = error/overdue. Press Play on any screen and click the sidebar to move between them.", "fill": "purple", "size": "m"}
+  },
+  "designSystems": []
+}

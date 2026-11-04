@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Orbitly Working App</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F4F8}
+a{color:#6B5CE7;text-decoration:none}a:hover{color:#4A3DBB}
+button{font:inherit;cursor:pointer}
+input,select,textarea{font:inherit}
+.nav:hover{background:rgba(255,255,255,.1)}
+.btn:hover{filter:brightness(.95)}
+.row:hover{background:#F8F8FC}
+.card{transition:transform .12s,box-shadow .12s}.card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(23,22,26,.08)}
+.pcard:hover{box-shadow:0 12px 28px rgba(23,22,26,.09)}
+.tile:hover{transform:translateY(-2px)}
+:focus-visible{outline:2px solid #6B5CE7;outline-offset:2px}
+</style>
+</helmet>
+
+<div style="display: flex; flex-wrap: wrap; min-height: 100vh; background: #F4F4F8; font-family: 'Poppins', system-ui, sans-serif; color: #17161A; font-size: 14px; line-height: 1.5">
+
+  <aside style="flex: 0 0 248px; background: #4A3DBB; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 10px 22px">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: #F7D84E; display: grid; place-items: center">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17161A" stroke-width="2.2"><circle cx="12" cy="12" r="4"></circle><path d="M3 12a9 9 0 0 1 18 0"></path></svg>
+      </div>
+      <span style="font-weight: 400; font-size: 20px; letter-spacing: -0.02em">Orbitly</span>
+      <button onClick="{{toggleLang}}" aria-label="{{L.switchLang}}" title="{{L.switchLang}}" style="margin-left: auto; height: 30px; padding: 0 10px; border-radius: 9px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #FFFFFF; font-size: 12px; font-weight: 500; letter-spacing: .04em">{{langLabel}}</button>
+    </div>
+    <div style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #C9C4F5; padding: 4px 12px 8px; font-weight: 400">{{L.overview}}</div>
+    <sc-for list="{{nav1}}" as="n" hint-placeholder-count="1">
+      <button class="nav" onClick="{{n.go}}" style="{{n.style}}">
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{n.dot}}; flex: 0 0 auto"></span>
+        <span>{{n.label}}</span>
+        <sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{true}}">
+          <span style="margin-left: auto; background: #E2503B; color: #FFFFFF; font-size: 11px; font-weight: 400; border-radius: 99px; padding: 2px 8px">{{n.badge}}</span>
+        </sc-if>
+      </button>
+    </sc-for>
+    <div style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #C9C4F5; padding: 16px 12px 8px; font-weight: 400">{{L.work}}</div>
+    <sc-for list="{{nav2}}" as="n" hint-placeholder-count="4">
+      <button class="nav" onClick="{{n.go}}" style="{{n.style}}">
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{n.dot}}; flex: 0 0 auto"></span>
+        <span>{{n.label}}</span>
+      </button>
+    </sc-for>
+    <div style="flex: 1"></div>
+    <div style="background: rgba(255,255,255,.12); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 12px; color: #E6E3FA; font-weight: 500">{{L.allWork}}</span>
+        <span style="font-size: 12px; color: #F7D84E">{{avgPct}}% {{L.doneL}}</span>
+      </div>
+      <div style="height: 6px; border-radius: 99px; background: rgba(255,255,255,.15); overflow: hidden"><div style="{{avgBarStyle}}"></div></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; padding: 14px 8px 2px">
+      <span style="width: 36px; height: 36px; border-radius: 50%; background: #F7D84E; color: #17161A; display: grid; place-items: center; font-size: 12px; font-weight: 400">EJ</span>
+      <div style="display: flex; flex-direction: column; line-height: 1.2">
+        <span style="font-weight: 400; font-size: 14px">Emma Johnson</span>
+        <span style="font-size: 12px; color: #C9C4F5">{{L.role}}</span>
+      </div>
+      <button onClick="{{resetDemo}}" title="{{L.resetDemo}}" aria-label="{{L.resetDemo}}" style="margin-left: auto; width: 32px; height: 32px; border-radius: 10px; border: 0; background: rgba(255,255,255,.1); color: #E6E3FA; display: grid; place-items: center">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"></path></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 36px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+
+    <header style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+      <label style="display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 14px; padding: 9px 14px; flex: 1 1 260px; max-width: 460px; color: #6B6A72">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input type="search" placeholder="{{searchPlaceholder}}" value="{{q}}" onChange="{{onQ}}" style="border: 0; outline: 0; background: transparent; font-size: 14px; flex: 1; color: #17161A; min-width: 0">
+      </label>
+      <div style="flex: 1"></div>
+      <button aria-label="{{L.overdueTasks}}" title="{{L.overdueTasks}}" onClick="{{goOverdue}}" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid #E4E4EC; background: #FFFFFF; display: grid; place-items: center; position: relative; color: #17161A">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0"></path></svg>
+        <sc-if value="{{hasLate}}" hint-placeholder-val="{{true}}">
+          <span style="position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 99px; background: #E2503B; color: #FFFFFF; font-size: 10px; font-weight: 400; display: grid; place-items: center; border: 2px solid #F4F4F8">{{lateN}}</span>
+        </sc-if>
+      </button>
+      <button class="btn" onClick="{{newProject}}" style="height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">{{L.newProject}}</button>
+      <button class="btn" onClick="{{newTask}}" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 14px; border: 0; background: #F7D84E; font-weight: 400; font-size: 14px; color: #17161A">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"></path></svg>
+        {{L.createTask}}
+      </button>
+    </header>
+
+    <!-- DASHBOARD -->
+    <sc-if value="{{isDashboard}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; color: #6B6A72; font-weight: 500">{{todayLabel}}</span>
+            <h1 style="margin: 0; font-weight: 400; font-size: 42px; letter-spacing: -0.03em; line-height: 1.05">{{greeting}}, Emma.</h1>
+          </div>
+          <p style="margin: 0; color: #6B6A72; max-width: 400px; font-size: 14px">{{summaryLine}}</p>
+        </div>
+
+        <section aria-label="{{L.keyNumbers}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 14px">
+          <button class="tile" onClick="{{goProjects}}" style="text-align: left; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 20px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; color: #17161A">
+            <span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.projects}}</span>
+            <span style="font-size: 46px; font-weight: 400; letter-spacing: -0.03em; line-height: 1">{{nProjects}}</span>
+            <span style="font-size: 13px; color: #6B6A72">{{nProjectsActive}} {{L.withOpenWork}}</span>
+          </button>
+          <button class="tile" onClick="{{goActive}}" style="text-align: left; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 20px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; color: #17161A">
+            <span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.activeTasks}}</span>
+            <span style="font-size: 46px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; color: #6B5CE7">{{nActive}}</span>
+            <span style="font-size: 13px; color: #6B6A72">{{nProg}} {{L.inProgressL}}, {{nTodo}} {{L.toDoL}}</span>
+          </button>
+          <button class="tile" onClick="{{goDone}}" style="text-align: left; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 20px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; color: #17161A">
+            <span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.completed}}</span>
+            <span style="font-size: 46px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; color: #1E9E5A">{{nDone}}</span>
+            <span style="font-size: 13px; color: #6B6A72">{{avgPct}}% {{L.ofAllWork}}</span>
+          </button>
+          <button class="tile" onClick="{{goOverdue}}" style="text-align: left; background: #6B5CE7; color: #FFFFFF; border: 0; border-radius: 20px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #E6E3FA; font-weight: 400">{{L.overdue}}</span>
+            <span style="font-size: 46px; font-weight: 400; letter-spacing: -0.03em; line-height: 1">{{lateN}}</span>
+            <span style="font-size: 13px; color: #E6E3FA">{{lateHint}}</span>
+          </button>
+        </section>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 18px; align-items: start">
+          <section aria-label="{{L.projectProgress}}" style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 22px; padding: 22px 24px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px">
+              <h2 style="margin: 0; font-size: 20px; font-weight: 400; letter-spacing: -0.02em">{{L.projectProgress}}</h2>
+              <button onClick="{{goProjects}}" style="border: 0; background: none; font-size: 13px; font-weight: 400; color: #6B5CE7; padding: 0">{{L.allProjects}}</button>
+            </div>
+            <sc-for list="{{projRows}}" as="p" hint-placeholder-count="3">
+              <button class="row" onClick="{{p.open}}" style="text-align: left; border: 0; background: none; color: #17161A; display: grid; grid-template-columns: 48px 1fr auto; gap: 6px 14px; align-items: center; padding: 10px 10px; border-radius: 14px; margin: 0 -10px">
+                <span style="{{p.keyStyle}}">{{p.key}}</span>
+                <span style="font-weight: 400; font-size: 15px">{{p.name}}</span>
+                <span style="font-size: 12px; color: #6B6A72">{{p.meta}}</span>
+                <span style="grid-column: 2 / -1; height: 8px; border-radius: 99px; background: #F4F4F8; overflow: hidden; display: flex">
+                  <span style="{{p.doneStyle}}"></span><span style="{{p.progStyle}}"></span>
+                </span>
+              </button>
+            </sc-for>
+            <sc-if value="{{noProjects}}" hint-placeholder-val="{{false}}">
+              <div style="color: #6B6A72; padding: 18px; text-align: center; border: 1.5px dashed #E4E4EC; border-radius: 14px">{{L.noProjects}}</div>
+            </sc-if>
+          </section>
+
+          <section aria-label="{{L.overdueTasks}}" style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 22px; padding: 22px 24px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+              <h2 style="margin: 0; font-size: 20px; font-weight: 400; letter-spacing: -0.02em">{{L.overdue}}</h2>
+              <span style="background: #FFE3DC; color: #9A2E1B; font-size: 12px; font-weight: 400; border-radius: 99px; padding: 2px 9px">{{lateN}}</span>
+              <button onClick="{{goOverdue}}" style="margin-left: auto; border: 0; background: none; font-size: 13px; font-weight: 400; color: #6B5CE7; padding: 0">{{L.seeAll}}</button>
+            </div>
+            <sc-for list="{{lateTasks}}" as="t" hint-placeholder-count="3">
+              <button class="row" onClick="{{t.open}}" style="text-align: left; border: 0; background: none; color: #17161A; display: flex; align-items: center; gap: 12px; padding: 11px 10px; border-radius: 14px; margin: 0 -10px">
+                <span style="font-size: 12px; color: #6B6A72; flex: 0 0 64px">{{t.key}}</span>
+                <span style="flex: 1; font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{t.title}}</span>
+                <span style="font-size: 12px; font-weight: 400; color: #E2503B; background: #FFE3DC; border-radius: 8px; padding: 3px 9px; white-space: nowrap">{{t.lateLabel}}</span>
+                <span style="{{t.avStyle}}" title="{{t.assignee}}">{{t.ini}}</span>
+              </button>
+            </sc-for>
+            <sc-if value="{{noLate}}" hint-placeholder-val="{{false}}">
+              <div style="color: #6B6A72; padding: 18px; text-align: center; border: 1.5px dashed #E4E4EC; border-radius: 14px">{{L.nothingOverdue}}</div>
+            </sc-if>
+          </section>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- PROJECTS -->
+    <sc-if value="{{isProjects}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; color: #6B6A72; font-weight: 500">{{projectsLine}}</span>
+            <h1 style="margin: 0; font-weight: 400; font-size: 42px; letter-spacing: -0.03em; line-height: 1.05">{{L.projects}}</h1>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 18px">
+          <sc-for list="{{projCards}}" as="p" hint-placeholder-count="3">
+            <div class="pcard" style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 14px; min-height: 230px; box-sizing: border-box; transition: box-shadow .12s">
+              <div style="display: flex; align-items: flex-start; gap: 10px">
+                <span style="{{p.keyStyleLg}}">{{p.key}}</span>
+                <span style="margin-left: auto; font-size: 12px; font-weight: 400; background: #F4F4F8; color: #6B6A72; border-radius: 99px; padding: 4px 10px">{{p.badge}}</span>
+                <button aria-label="{{L.editProject}}" onClick="{{p.edit}}" style="width: 32px; height: 32px; border-radius: 10px; border: 1px solid #E4E4EC; background: #FFFFFF; color: #6B6A72; display: grid; place-items: center">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4l10-10-4-4L4 16zM13 7l4 4"></path></svg>
+                </button>
+              </div>
+              <button onClick="{{p.open}}" style="text-align: left; border: 0; background: none; padding: 0; color: #17161A; display: flex; flex-direction: column; gap: 4px">
+                <span style="font-size: 22px; font-weight: 400; letter-spacing: -0.02em">{{p.name}}</span>
+                <span style="color: #6B6A72; font-size: 14px">{{p.desc}}</span>
+              </button>
+              <div style="flex: 1"></div>
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #6B6A72">
+                <span>{{p.meta}}</span>
+                <span style="color: #17161A">{{p.pct}}%</span>
+              </div>
+              <div style="height: 8px; border-radius: 99px; background: #F4F4F8; overflow: hidden"><span style="{{p.pctStyle}}"></span></div>
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
+                <sc-for list="{{p.people}}" as="u" hint-placeholder-count="2">
+                  <span style="{{u.avStyle}}" title="{{u.name}}">{{u.ini}}</span>
+                </sc-for>
+                <button onClick="{{p.open}}" style="margin-left: auto; height: 34px; padding: 0 12px; border-radius: 10px; border: 0; background: #6B5CE7; color: #FFFFFF; font-weight: 400; font-size: 13px">{{L.openBoard}}</button>
+              </div>
+            </div>
+          </sc-for>
+          <button onClick="{{newProject}}" style="background: transparent; border: 1.5px dashed #C9C7CF; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 230px; color: #6B6A72; box-sizing: border-box">
+            <span style="width: 48px; height: 48px; border-radius: 50%; background: #FFFFFF; border: 1px solid #E4E4EC; display: grid; place-items: center">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+            </span>
+            <span style="font-weight: 400; font-size: 15px">{{L.startProject}}</span>
+            <span style="font-size: 13px">{{L.startProjectHint}}</span>
+          </button>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- PROJECT VIEWS -->
+    <sc-if value="{{isProject}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <nav aria-label="{{L.breadcrumb}}" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #6B6A72">
+          <button onClick="{{goProjects}}" style="border: 0; background: none; color: #6B6A72; padding: 0">{{L.projects}}</button>
+          <span>/</span>
+          <span style="color: #17161A; font-weight: 400">{{cur.name}}</span>
+        </nav>
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+          <span style="{{cur.keyStyleXl}}">{{cur.key}}</span>
+          <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+            <h1 style="margin: 0; font-weight: 400; font-size: 34px; letter-spacing: -0.03em; line-height: 1.05">{{cur.name}}</h1>
+            <span style="color: #6B6A72; font-size: 14px">{{cur.desc}} · {{cur.pct}}% {{L.complete}}</span>
+          </div>
+          <div style="flex: 1"></div>
+          <div style="display: flex; align-items: center">
+            <sc-for list="{{cur.people}}" as="u" hint-placeholder-count="3">
+              <span style="{{u.avStyleStack}}" title="{{u.name}}">{{u.ini}}</span>
+            </sc-for>
+          </div>
+          <label style="display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 14px; padding: 0 12px; height: 44px">
+            <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{L.switchProject}}</span>
+            <select value="{{cur.id}}" onChange="{{switchProject}}" style="border: 0; background: transparent; outline: 0; font-weight: 400; font-size: 14px; color: #17161A; max-width: 220px">
+              <sc-for list="{{projectOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.id}}">{{o.label}}</option></sc-for>
+            </select>
+          </label>
+          <button class="btn" onClick="{{editCur}}" style="height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">{{L.edit}}</button>
+          <button class="btn" onClick="{{deleteCur}}" style="height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #9A2E1B">{{L.delete}}</button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+          <nav aria-label="{{L.projectViews}}" style="display: inline-flex; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 14px; padding: 4px; gap: 2px">
+            <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="4">
+              <button onClick="{{tb.go}}" style="{{tb.style}}">{{tb.label}}</button>
+            </sc-for>
+          </nav>
+          <div style="flex: 1"></div>
+          <div style="display: flex; align-items: center">
+            <sc-for list="{{people}}" as="u" hint-placeholder-count="3">
+              <button onClick="{{u.pick}}" aria-label="{{u.name}}" title="{{u.name}}" style="{{u.filterStyle}}">{{u.ini}}</button>
+            </sc-for>
+          </div>
+          <label style="{{catChipStyle}}">
+            <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{L.category}}</span>
+            <select value="{{fcat}}" onChange="{{onCat}}" style="border: 0; background: transparent; outline: 0; font-weight: 400; font-size: 13px; color: inherit">
+              <option value="">{{L.category}}</option>
+              <sc-for list="{{catOptions}}" as="c" hint-placeholder-count="5"><option value="{{c.v}}">{{c.label}}</option></sc-for>
+            </select>
+          </label>
+          <button onClick="{{toggleMine}}" style="{{mineChipStyle}}">{{L.mine}}</button>
+          <button onClick="{{toggleLate}}" style="{{lateChipStyle}}">{{L.overdue}}</button>
+          <sc-if value="{{hasFilters}}" hint-placeholder-val="{{false}}">
+            <button onClick="{{clearFilters}}" style="height: 40px; padding: 0 12px; border-radius: 12px; border: 0; background: transparent; font-weight: 400; font-size: 13px; color: #6B5CE7">{{L.clear}}</button>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #17161A; color: #FFFFFF; border-radius: 14px; padding: 8px 8px 8px 16px">
+            <span style="font-weight: 400; font-size: 13px">{{selN}} {{L.selected}}</span>
+            <select value="{{bulkStatus}}" onChange="{{onBulkStatus}}" aria-label="{{L.moveSelectedTo}}" style="height: 34px; border-radius: 10px; border: 0; padding: 0 10px; font-weight: 400; font-size: 13px; background: #FFFFFF; color: #17161A"><option value="To Do">{{L.stTodo}}</option><option value="In Progress">{{L.stProg}}</option><option value="Done">{{L.stDone}}</option></select>
+            <button onClick="{{bulkMove}}" style="height: 34px; padding: 0 12px; border-radius: 10px; border: 0; background: #6B5CE7; color: #FFFFFF; font-weight: 400; font-size: 13px">{{L.move}}</button>
+            <button onClick="{{bulkDelete}}" style="height: 34px; padding: 0 12px; border-radius: 10px; border: 0; background: #E2503B; color: #FFFFFF; font-weight: 400; font-size: 13px">{{L.delete}}</button>
+            <button onClick="{{clearSel}}" style="margin-left: auto; height: 34px; padding: 0 12px; border-radius: 10px; border: 0; background: transparent; color: #E6E3FA; font-weight: 400; font-size: 13px">{{L.clearSelection}}</button>
+          </div>
+        </sc-if>
+
+        <!-- BOARD -->
+        <sc-if value="{{isBoard}}" hint-placeholder-val="{{true}}">
+          <div style="overflow-x: auto; padding-bottom: 8px">
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(290px, 1fr)); gap: 16px; align-items: start; min-width: min-content">
+              <sc-for list="{{cols}}" as="col" hint-placeholder-count="3">
+                <section aria-label="{{col.name}}" onDragOver="{{col.dragOver}}" onDragLeave="{{col.dragLeave}}" onDrop="{{col.drop}}" style="{{col.style}}">
+                  <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 2px">
+                    <span style="{{col.dotStyle}}"></span>
+                    <span style="font-weight: 400; font-size: 16px">{{col.name}}</span>
+                    <span style="font-size: 12px; color: #6B6A72">{{col.n}}</span>
+                    <button aria-label="{{L.addTask}}" onClick="{{col.add}}" style="margin-left: auto; width: 32px; height: 32px; border-radius: 10px; border: 0; background: transparent; color: #6B6A72; display: grid; place-items: center">
+                      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+                    </button>
+                  </div>
+                  <sc-for list="{{col.items}}" as="t" hint-placeholder-count="2">
+                    <div class="card" draggable="true" onDragStart="{{t.dragStart}}" onDragEnd="{{t.dragEnd}}" style="{{t.cardStyle}}">
+                      <div style="display: flex; align-items: center; gap: 8px">
+                        <span style="font-size: 12px; color: #6B6A72">{{t.key}}</span>
+                        <span style="{{t.typeStyle}}">{{t.typeLabel}}</span>
+                        <span style="{{t.dueStyle}}">{{t.dueLabel}}</span>
+                      </div>
+                      <button onClick="{{t.open}}" style="text-align: left; border: 0; background: none; padding: 0; color: inherit; font-weight: 400; font-size: 15px; line-height: 1.35; text-decoration: inherit">{{t.title}}</button>
+                      <sc-if value="{{t.hasChecklist}}" hint-placeholder-val="{{false}}">
+                        <div style="height: 6px; border-radius: 99px; background: #F4F4F8; overflow: hidden"><span style="{{t.clStyle}}"></span></div>
+                      </sc-if>
+                      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                        <span style="{{t.catStyle}}">{{t.catLabel}}</span>
+                        <span style="{{t.priStyle}}">{{t.priLabel}}</span>
+                        <sc-if value="{{t.hasChecklist}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #6B6A72">{{t.clLabel}}</span></sc-if>
+                        <sc-if value="{{t.hasComments}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #6B6A72">{{t.nComments}} {{L.commentsN}}</span></sc-if>
+                        <span style="{{t.avStyleSm}}" title="{{t.assignee}}">{{t.ini}}</span>
+                      </div>
+                      <div style="display: flex; gap: 6px">
+                        <sc-if value="{{t.canBack}}" hint-placeholder-val="{{false}}"><button onClick="{{t.back}}" aria-label="{{L.back}}" style="height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid #E4E4EC; background: #FFFFFF; font-size: 12px; font-weight: 400; color: #6B6A72">{{L.back}}</button></sc-if>
+                        <sc-if value="{{t.canFwd}}" hint-placeholder-val="{{true}}"><button onClick="{{t.fwd}}" style="height: 30px; padding: 0 10px; border-radius: 8px; border: 0; background: #ECE9FF; font-size: 12px; font-weight: 400; color: #4A3DBB">{{t.fwdLabel}}</button></sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{col.empty}}" hint-placeholder-val="{{false}}">
+                    <div style="color: #6B6A72; font-size: 13px; text-align: center; padding: 24px 12px; border: 1.5px dashed #C9C7CF; border-radius: 14px">{{L.dropHere}}</div>
+                  </sc-if>
+                  <button onClick="{{col.add}}" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 12px 14px; border-radius: 14px; border: 1.5px dashed #C9C7CF; background: transparent; font-weight: 400; font-size: 14px; color: #6B6A72; box-sizing: border-box">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+                    {{L.addTask}}
+                  </button>
+                </section>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- LIST -->
+        <sc-if value="{{isList}}" hint-placeholder-val="{{false}}">
+          <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 22px">
+            <table style="width: 100%; border-collapse: collapse; min-width: 900px">
+              <thead><tr>
+                <th style="padding: 14px 8px 14px 16px; border-bottom: 1px solid #E4E4EC; width: 20px"></th>
+                <sc-for list="{{heads1}}" as="h" hint-placeholder-count="7">
+                  <th style="text-align: left; padding: 14px 16px; border-bottom: 1px solid #E4E4EC"><button onClick="{{h.sort}}" style="{{h.style}}">{{h.label}}{{h.arrow}}</button></th>
+                </sc-for>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{listRows}}" as="t" hint-placeholder-count="4">
+                  <tr class="row">
+                    <td style="padding: 12px 8px 12px 16px; border-bottom: 1px solid #E4E4EC"><input type="checkbox" checked="{{t.selected}}" onChange="{{t.toggleSel}}" aria-label="Select {{t.key}}" style="width: 16px; height: 16px; accent-color: #6B5CE7; margin: 0; display: block"></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; white-space: nowrap"><span style="font-size: 12px; color: #6B6A72">{{t.key}}</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; min-width: 240px"><button onClick="{{t.open}}" style="text-align: left; border: 0; background: none; padding: 0; font-weight: 500; color: #17161A">{{t.title}}</button></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC"><span style="{{t.catStyle}}">{{t.catLabel}}</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 8px"><span style="{{t.avStyleSm}}">{{t.ini}}</span>{{t.assignee}}</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC"><span style="{{t.priStyle}}">{{t.priLabel}}</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; white-space: nowrap"><span style="{{t.dueTextStyle}}">{{t.dueLabel}}</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC"><select value="{{t.status}}" onChange="{{t.onStatus}}" style="border: 1px solid #E4E4EC; background: #FFFFFF; border-radius: 8px; padding: 5px 8px; font-size: 13px; font-weight: 500"><option value="To Do">{{L.stTodo}}</option><option value="In Progress">{{L.stProg}}</option><option value="Done">{{L.stDone}}</option></select></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <sc-if value="{{listEmpty}}" hint-placeholder-val="{{false}}"><div style="color: #6B6A72; padding: 24px; text-align: center">{{L.noMatch}}</div></sc-if>
+          </div>
+        </sc-if>
+
+        <!-- BACKLOG -->
+        <sc-if value="{{isBacklog}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; gap: 22px">
+            <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+              <section style="display: flex; flex-direction: column; gap: 8px">
+                <div style="display: flex; align-items: center; gap: 10px">
+                  <span style="{{g.dotStyle}}"></span>
+                  <h2 style="margin: 0; font-size: 17px; font-weight: 400">{{g.name}}</h2>
+                  <span style="font-size: 12px; color: #6B6A72">{{g.n}}</span>
+                  <button onClick="{{g.add}}" style="margin-left: auto; border: 0; background: none; font-weight: 400; font-size: 13px; color: #6B5CE7">{{L.plusCreate}}</button>
+                </div>
+                <div style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 18px; overflow: hidden">
+                  <sc-for list="{{g.items}}" as="t" hint-placeholder-count="2">
+                    <div class="row" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #E4E4EC; flex-wrap: wrap">
+                      <span style="font-size: 12px; color: #6B6A72; flex: 0 0 64px">{{t.key}}</span>
+                      <button onClick="{{t.open}}" style="flex: 1 1 240px; text-align: left; border: 0; background: none; padding: 0; font-weight: 500; color: #17161A; min-width: 0">{{t.title}}</button>
+                      <span style="{{t.catStyle}}">{{t.catLabel}}</span>
+                      <span style="{{t.priStyle}}">{{t.priLabel}}</span>
+                      <span style="{{t.dueTextStyle}}">{{t.dueLabel}}</span>
+                      <span style="{{t.avStyleSm}}" title="{{t.assignee}}">{{t.ini}}</span>
+                      <sc-if value="{{t.canFwd}}" hint-placeholder-val="{{true}}"><button onClick="{{t.fwd}}" style="height: 30px; padding: 0 10px; border-radius: 8px; border: 0; background: #ECE9FF; font-size: 12px; font-weight: 400; color: #4A3DBB">{{t.fwdLabel}}</button></sc-if>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{g.empty}}" hint-placeholder-val="{{false}}"><div style="color: #6B6A72; padding: 18px; text-align: center; font-size: 13px">{{L.nothingHere}}</div></sc-if>
+                </div>
+              </section>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- TIMELINE -->
+        <sc-if value="{{isTimeline}}" hint-placeholder-val="{{false}}">
+          <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 22px">
+            <div style="display: grid; grid-template-columns: 280px 1fr; min-width: 1000px">
+              <div style="padding: 14px 20px; border-bottom: 1px solid #E4E4EC; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.taskCol}}</div>
+              <div style="{{tlHeadStyle}}">
+                <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><div style="{{d.headStyle}}">{{d.label}}</div></sc-for>
+              </div>
+              <sc-for list="{{tlRows}}" as="t" hint-placeholder-count="4">
+                <button onClick="{{t.open}}" style="text-align: left; border: 0; background: none; color: #17161A; display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-bottom: 1px solid #E4E4EC; min-width: 0">
+                  <span style="{{t.dotStyle}}"></span>
+                  <span style="font-size: 12px; color: #6B6A72; flex: 0 0 56px">{{t.key}}</span>
+                  <span style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{t.title}}</span>
+                </button>
+                <div style="{{tlTrackStyle}}">
+                  <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><div style="{{d.cellStyle}}"></div></sc-for>
+                  <button onClick="{{t.open}}" style="{{t.barStyle}}">{{t.barLabel}}</button>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{tlEmpty}}" hint-placeholder-val="{{false}}"><div style="color: #6B6A72; padding: 24px; text-align: center">{{L.noMatch}}</div></sc-if>
+          </div>
+          <div style="display: flex; gap: 18px; font-size: 12px; color: #6B6A72; flex-wrap: wrap">
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 22px; height: 10px; border-radius: 4px; background: #1E9E5A"></span>{{L.done}}</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 22px; height: 10px; border-radius: 4px; background: #6B5CE7"></span>{{L.inProgress}}</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 22px; height: 10px; border-radius: 4px; background: #FFFFFF; border: 1.5px solid #8D8B95; box-sizing: border-box"></span>{{L.toDo}}</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 22px; height: 10px; border-radius: 4px; background: #E2503B"></span>{{L.overdue}}</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 22px; height: 10px; border-radius: 4px; background: #FEF9E0; border: 1px solid #E4E4EC; box-sizing: border-box"></span>{{L.today}}</span>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ALL TASKS -->
+    <sc-if value="{{isTasks}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; color: #6B6A72; font-weight: 500">{{tasksLine}}</span>
+            <h1 style="margin: 0; font-weight: 400; font-size: 42px; letter-spacing: -0.03em; line-height: 1.05">{{L.tasks}}</h1>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+          <div style="display: flex; align-items: center">
+            <sc-for list="{{people}}" as="u" hint-placeholder-count="3">
+              <button onClick="{{u.pick}}" aria-label="{{u.name}}" title="{{u.name}}" style="{{u.filterStyle}}">{{u.ini}}</button>
+            </sc-for>
+          </div>
+          <label style="{{projChipStyle}}">
+            <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{L.project}}</span>
+            <select value="{{fproject}}" onChange="{{onFProject}}" style="border: 0; background: transparent; outline: 0; font-weight: 400; font-size: 13px; color: inherit">
+              <option value="">{{L.allProjects}}</option>
+              <sc-for list="{{projectOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.id}}">{{o.label}}</option></sc-for>
+            </select>
+          </label>
+          <label style="{{statusChipStyle}}">
+            <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{L.status}}</span>
+            <select value="{{fstatus}}" onChange="{{onFStatus}}" style="border: 0; background: transparent; outline: 0; font-weight: 400; font-size: 13px; color: inherit">
+              <option value="">{{L.allStatuses}}</option><option value="To Do">{{L.stTodo}}</option><option value="In Progress">{{L.stProg}}</option><option value="Done">{{L.stDone}}</option>
+            </select>
+          </label>
+          <label style="{{catChipStyle}}">
+            <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{L.category}}</span>
+            <select value="{{fcat}}" onChange="{{onCat}}" style="border: 0; background: transparent; outline: 0; font-weight: 400; font-size: 13px; color: inherit">
+              <option value="">{{L.category}}</option>
+              <sc-for list="{{catOptions}}" as="c" hint-placeholder-count="5"><option value="{{c.v}}">{{c.label}}</option></sc-for>
+            </select>
+          </label>
+          <button onClick="{{toggleMine}}" style="{{mineChipStyle}}">{{L.mine}}</button>
+          <button onClick="{{toggleLate}}" style="{{lateChipStyle}}">{{L.overdue}}</button>
+          <sc-if value="{{hasFilters}}" hint-placeholder-val="{{false}}">
+            <button onClick="{{clearFilters}}" style="height: 40px; padding: 0 12px; border-radius: 12px; border: 0; background: transparent; font-weight: 400; font-size: 13px; color: #6B5CE7">{{L.clear}}</button>
+          </sc-if>
+        </div>
+        <sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #17161A; color: #FFFFFF; border-radius: 14px; padding: 8px 8px 8px 16px">
+            <span style="font-weight: 400; font-size: 13px">{{selN}} {{L.selected}}</span>
+            <select value="{{bulkStatus}}" onChange="{{onBulkStatus}}" aria-label="{{L.moveSelectedTo}}" style="height: 34px; border-radius: 10px; border: 0; padding: 0 10px; font-weight: 400; font-size: 13px; background: #FFFFFF; color: #17161A"><option value="To Do">{{L.stTodo}}</option><option value="In Progress">{{L.stProg}}</option><option value="Done">{{L.stDone}}</option></select>
+            <button onClick="{{bulkMove}}" style="height: 34px; padding: 0 12px; border-radius: 10px; border: 0; background: #6B5CE7; color: #FFFFFF; font-weight: 400; font-size: 13px">{{L.move}}</button>
+            <button onClick="{{bulkDelete}}" style="height: 34px; padding: 0 12px; border-radius: 10px; border: 0; background: #E2503B; color: #FFFFFF; font-weight: 400; font-size: 13px">{{L.delete}}</button>
+            <button onClick="{{clearSel}}" style="margin-left: auto; height: 34px; padding: 0 12px; border-radius: 10px; border: 0; background: transparent; color: #E6E3FA; font-weight: 400; font-size: 13px">{{L.clearSelection}}</button>
+          </div>
+        </sc-if>
+        <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 22px">
+          <table style="width: 100%; border-collapse: collapse; min-width: 1000px">
+            <thead><tr>
+              <th style="padding: 14px 8px 14px 16px; border-bottom: 1px solid #E4E4EC; width: 20px"></th>
+              <sc-for list="{{heads}}" as="h" hint-placeholder-count="8">
+                <th style="text-align: left; padding: 14px 16px; border-bottom: 1px solid #E4E4EC"><button onClick="{{h.sort}}" style="{{h.style}}">{{h.label}}{{h.arrow}}</button></th>
+              </sc-for>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{allRows}}" as="t" hint-placeholder-count="5">
+                <tr class="row">
+                  <td style="padding: 12px 8px 12px 16px; border-bottom: 1px solid #E4E4EC"><input type="checkbox" checked="{{t.selected}}" onChange="{{t.toggleSel}}" aria-label="Select {{t.key}}" style="width: 16px; height: 16px; accent-color: #6B5CE7; margin: 0; display: block"></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; white-space: nowrap"><span style="font-size: 12px; color: #6B6A72">{{t.key}}</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; min-width: 240px"><button onClick="{{t.open}}" style="text-align: left; border: 0; background: none; padding: 0; font-weight: 500; color: #17161A">{{t.title}}</button></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; white-space: nowrap"><button onClick="{{t.openProject}}" style="border: 0; background: none; padding: 0; font-weight: 500; color: #6B5CE7">{{t.projectName}}</button></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC"><span style="{{t.catStyle}}">{{t.catLabel}}</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 8px"><span style="{{t.avStyleSm}}">{{t.ini}}</span>{{t.assignee}}</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC"><span style="{{t.priStyle}}">{{t.priLabel}}</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC; white-space: nowrap"><span style="{{t.dueTextStyle}}">{{t.dueLabel}}</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #E4E4EC"><select value="{{t.status}}" onChange="{{t.onStatus}}" style="border: 1px solid #E4E4EC; background: #FFFFFF; border-radius: 8px; padding: 5px 8px; font-size: 13px; font-weight: 500"><option value="To Do">{{L.stTodo}}</option><option value="In Progress">{{L.stProg}}</option><option value="Done">{{L.stDone}}</option></select></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <sc-if value="{{allEmpty}}" hint-placeholder-val="{{false}}"><div style="color: #6B6A72; padding: 24px; text-align: center">{{L.noMatch}}</div></sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- REPORTS -->
+    <sc-if value="{{isReports}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 22px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; color: #6B6A72; font-weight: 500">{{reportsLine}}</span>
+          <h1 style="margin: 0; font-weight: 400; font-size: 42px; letter-spacing: -0.03em; line-height: 1.05">{{L.reports}}</h1>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 14px">
+          <div style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.totalTasks}}</span><span style="font-size: 36px; font-weight: 400; letter-spacing: -0.03em; line-height: 1">{{nTasks}}</span></div>
+          <div style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.done}}</span><span style="font-size: 36px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; color: #1E9E5A">{{nDone}}</span></div>
+          <div style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.overdue}}</span><span style="font-size: 36px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; color: #E2503B">{{lateN}}</span></div>
+          <div style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.avgProgress}}</span><span style="font-size: 36px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; color: #6B5CE7">{{avgProjPct}}%</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 18px; align-items: start">
+          <sc-for list="{{reportGroups}}" as="g" hint-placeholder-count="3">
+            <section style="background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 22px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px">
+              <h2 style="margin: 0; font-size: 18px; font-weight: 400; letter-spacing: -0.02em">{{g.title}}</h2>
+              <div style="display: grid; grid-template-columns: 150px 1fr 32px; gap: 10px 12px; align-items: center; font-size: 13px">
+                <sc-for list="{{g.rows}}" as="r" hint-placeholder-count="3">
+                  <span style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{r.k}}</span>
+                  <div style="height: 10px; border-radius: 99px; background: #F4F4F8; overflow: hidden"><span style="{{r.barStyle}}"></span></div>
+                  <span style="color: #6B6A72; text-align: right">{{r.v}}</span>
+                </sc-for>
+              </div>
+            </section>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- TASK DRAWER -->
+  <sc-if value="{{drawerOpen}}" hint-placeholder-val="{{false}}">
+    <div onClick="{{closeDrawer}}" style="position: fixed; inset: 0; background: rgba(23,22,26,.35); z-index: 20"></div>
+    <section aria-label="{{L.taskDetails}}" style="position: fixed; top: 0; right: 0; bottom: 0; width: min(760px, 100%); background: #FFFFFF; z-index: 21; display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(23,22,26,.18); box-sizing: border-box">
+      <header style="display: flex; align-items: center; gap: 10px; padding: 16px 24px; border-bottom: 1px solid #E4E4EC">
+        <button onClick="{{dt.openProject}}" style="border: 0; background: none; padding: 0; font-size: 13px; color: #6B5CE7">{{dt.projectKey}}</button>
+        <span style="color: #C9C7CF">/</span>
+        <span style="font-size: 13px; color: #17161A">{{dt.key}}</span>
+        <span style="{{dt.typeStyle}}">{{dt.typeLabel}}</span>
+        <div style="flex: 1"></div>
+        <button class="btn" onClick="{{dt.duplicate}}" style="height: 38px; padding: 0 12px; border-radius: 12px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 13px; color: #17161A">{{L.duplicate}}</button>
+        <button class="btn" onClick="{{dt.del}}" style="height: 38px; padding: 0 12px; border-radius: 12px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 13px; color: #9A2E1B">{{L.delete}}</button>
+        <button aria-label="{{L.close}}" onClick="{{closeDrawer}}" style="width: 38px; height: 38px; border-radius: 12px; border: 0; background: #6B5CE7; color: #FFFFFF; display: grid; place-items: center">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </header>
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 250px; flex: 1; min-height: 0">
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 22px; overflow: auto; border-right: 1px solid #E4E4EC">
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="{{dt.dueStyle}}">{{dt.dueLabel}}</span>
+              <span style="font-size: 12px; color: #6B6A72">{{L.created}} {{dt.createdLabel}}</span>
+            </div>
+            <label style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.title}}</span>
+              <input type="text" value="{{dt.title}}" onChange="{{dt.onTitle}}" style="border: 1px solid #E4E4EC; border-radius: 12px; padding: 10px 12px; font-weight: 400; font-size: 22px; letter-spacing: -0.02em; color: #17161A; outline: 0; background: #FFFFFF; min-width: 0">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.description}}</span>
+              <textarea value="{{dt.desc}}" onChange="{{dt.onDesc}}" placeholder="{{L.phDesc}}" style="border: 1px solid #E4E4EC; border-radius: 12px; padding: 10px 12px; font-size: 14px; color: #17161A; outline: 0; min-height: 80px; resize: vertical; background: #FFFFFF"></textarea>
+            </label>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; align-items: center; gap: 10px">
+              <h2 style="margin: 0; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.checklist}}</h2>
+              <span style="font-size: 12px; color: #17161A">{{dt.clLabel}}</span>
+              <div style="flex: 1; height: 6px; border-radius: 99px; background: #F4F4F8; overflow: hidden; max-width: 160px"><span style="{{dt.clStyle}}"></span></div>
+            </div>
+            <sc-for list="{{dt.checklist}}" as="c" hint-placeholder-count="2">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 12px; background: #F4F4F8">
+                <input type="checkbox" checked="{{c.done}}" onChange="{{c.toggle}}" aria-label="{{c.text}}" style="width: 18px; height: 18px; accent-color: #6B5CE7; margin: 0">
+                <span style="{{c.textStyle}}">{{c.text}}</span>
+                <button aria-label="{{L.removeItem}}" onClick="{{c.remove}}" style="border: 0; background: none; color: #6B6A72; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center">
+                  <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+                </button>
+              </div>
+            </sc-for>
+            <div style="display: flex; gap: 8px">
+              <input type="text" value="{{newCheck}}" onChange="{{onNewCheck}}" onKeyDown="{{checkKey}}" placeholder="{{L.phCheck}}" aria-label="{{L.newCheckItem}}" style="flex: 1; border: 1px dashed #C9C7CF; background: transparent; border-radius: 12px; padding: 9px 12px; font-size: 14px; color: #17161A; outline: 0; min-width: 0">
+              <button onClick="{{addCheck}}" style="height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 13px; color: #17161A">{{L.add}}</button>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <h2 style="margin: 0; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.comments}}</h2>
+            <sc-for list="{{dt.comments}}" as="c" hint-placeholder-count="1">
+              <div style="display: flex; gap: 12px">
+                <span style="{{c.avStyle}}">{{c.ini}}</span>
+                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1">
+                  <div style="display: flex; align-items: baseline; gap: 8px"><span style="font-weight: 400">{{c.by}}</span><span style="font-size: 12px; color: #6B6A72">{{c.at}}</span></div>
+                  <p style="margin: 0; background: #F4F4F8; border-radius: 0 14px 14px 14px; padding: 10px 14px; overflow-wrap: anywhere">{{c.text}}</p>
+                </div>
+              </div>
+            </sc-for>
+            <div style="display: flex; gap: 12px; align-items: flex-start">
+              <span style="width: 34px; height: 34px; border-radius: 50%; background: #F7D84E; color: #17161A; display: grid; place-items: center; font-size: 11px; font-weight: 400; flex: 0 0 auto">EJ</span>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 8px; border: 1px solid #E4E4EC; border-radius: 16px; padding: 10px 12px">
+                <textarea value="{{newComment}}" onChange="{{onNewComment}}" placeholder="{{L.phComment}}" aria-label="{{L.newComment}}" style="border: 0; outline: 0; resize: none; font-size: 14px; color: #17161A; min-height: 44px; background: transparent"></textarea>
+                <div style="display: flex; justify-content: flex-end"><button onClick="{{addComment}}" style="height: 34px; padding: 0 14px; border-radius: 10px; border: 0; background: #6B5CE7; color: #FFFFFF; font-weight: 400; font-size: 13px">{{L.comment}}</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h2 style="margin: 0; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.activity}}</h2>
+            <sc-for list="{{dt.activity}}" as="a" hint-placeholder-count="2">
+              <div style="font-size: 13px; color: #6B6A72; padding: 4px 0; border-bottom: 1px dashed #E4E4EC"><span style="font-size: 11px; margin-right: 8px">{{a.at}}</span>{{a.text}}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <aside style="padding: 20px 18px; display: flex; flex-direction: column; gap: 16px; background: #F8F8FC; overflow: auto">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.status}}</span>
+            <div style="display: flex; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 12px; padding: 3px; gap: 2px">
+              <sc-for list="{{dt.statusBtns}}" as="s" hint-placeholder-count="3"><button onClick="{{s.set}}" style="{{s.style}}">{{s.name}}</button></sc-for>
+            </div>
+          </div>
+          <label style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.assignee}}</span>
+            <select value="{{dt.assignee}}" onChange="{{dt.onAssignee}}" style="border: 1px solid #E4E4EC; border-radius: 12px; padding: 10px 12px; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">
+              <option value="">{{L.unassigned}}</option>
+              <sc-for list="{{peopleNames}}" as="n" hint-placeholder-count="3"><option value="{{n}}">{{n}}</option></sc-for>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.priority}}</span>
+            <select value="{{dt.priority}}" onChange="{{dt.onPriority}}" style="border: 1px solid #E4E4EC; border-radius: 12px; padding: 10px 12px; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">
+              <option value="high">{{L.high}}</option><option value="medium">{{L.medium}}</option><option value="low">{{L.low}}</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.type}}</span>
+            <select value="{{dt.type}}" onChange="{{dt.onType}}" style="border: 1px solid #E4E4EC; border-radius: 12px; padding: 10px 12px; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">
+              <option value="task">{{L.task}}</option><option value="bug">{{L.bug}}</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.category}}</span>
+            <select value="{{dt.category}}" onChange="{{dt.onCategory}}" style="border: 1px solid #E4E4EC; border-radius: 12px; padding: 10px 12px; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">
+              <sc-for list="{{catOptions}}" as="c" hint-placeholder-count="5"><option value="{{c.v}}">{{c.label}}</option></sc-for>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.dueDate}}</span>
+            <input type="date" value="{{dt.due}}" onChange="{{dt.onDue}}" style="{{dt.dueInputStyle}}">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.project}}</span>
+            <select value="{{dt.projectId}}" onChange="{{dt.onProject}}" style="border: 1px solid #E4E4EC; border-radius: 12px; padding: 10px 12px; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">
+              <sc-for list="{{projectOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.id}}">{{o.label}}</option></sc-for>
+            </select>
+          </label>
+        </aside>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- TASK MODAL -->
+  <sc-if value="{{taskModalOpen}}" hint-placeholder-val="{{false}}">
+    <div onClick="{{closeModal}}" style="position: fixed; inset: 0; background: rgba(23,22,26,.45); z-index: 30"></div>
+    <section aria-label="{{L.createTask}}" style="position: fixed; top: 40px; left: 50%; transform: translateX(-50%); width: min(640px, calc(100% - 32px)); max-height: calc(100% - 80px); overflow: auto; background: #FFFFFF; border-radius: 20px; padding: 24px 26px; z-index: 31; box-shadow: 0 20px 60px rgba(23,22,26,.25); display: flex; flex-direction: column; gap: 14px; box-sizing: border-box">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <h2 style="margin: 0; font-size: 22px; font-weight: 400; letter-spacing: -0.02em">{{L.newTask}}</h2>
+        <button aria-label="{{L.close}}" onClick="{{closeModal}}" style="margin-left: auto; width: 36px; height: 36px; border-radius: 10px; border: 1px solid #E4E4EC; background: #FFFFFF; display: grid; place-items: center; color: #17161A">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+      <sc-if value="{{modalErrOn}}" hint-placeholder-val="{{false}}"><div style="color: #9A2E1B; background: #FFE3DC; border-radius: 10px; padding: 8px 12px; font-size: 13px; font-weight: 500">{{modalErr}}</div></sc-if>
+      <label style="display: flex; flex-direction: column; gap: 5px">
+        <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.title}}</span>
+        <input type="text" value="{{draft.title}}" onChange="{{dTitle}}" placeholder="{{L.phTitle}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 14px; font-size: 18px; font-weight: 400; outline: 0; color: #17161A">
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 5px">
+        <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.description}}</span>
+        <textarea value="{{draft.desc}}" onChange="{{dDesc}}" placeholder="{{L.phDesc2}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 14px; font-size: 14px; min-height: 80px; resize: vertical; outline: 0; color: #17161A"></textarea>
+      </label>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 12px">
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.project}}</span>
+          <select value="{{draft.projectId}}" onChange="{{dProject}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 500">
+            <sc-for list="{{projectOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.id}}">{{o.label}}</option></sc-for>
+          </select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.status}}</span>
+          <select value="{{draft.status}}" onChange="{{dStatus}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 500"><option value="To Do">{{L.stTodo}}</option><option value="In Progress">{{L.stProg}}</option><option value="Done">{{L.stDone}}</option></select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.type}}</span>
+          <select value="{{draft.type}}" onChange="{{dType}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 500"><option value="task">{{L.task}}</option><option value="bug">{{L.bug}}</option></select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.priority}}</span>
+          <select value="{{draft.priority}}" onChange="{{dPriority}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 500"><option value="high">{{L.high}}</option><option value="medium">{{L.medium}}</option><option value="low">{{L.low}}</option></select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.category}}</span>
+          <select value="{{draft.category}}" onChange="{{dCategory}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 500">
+            <sc-for list="{{catOptions}}" as="c" hint-placeholder-count="5"><option value="{{c.v}}">{{c.label}}</option></sc-for>
+          </select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.assignee}}</span>
+          <select value="{{draft.assignee}}" onChange="{{dAssignee}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 500">
+            <option value="">{{L.unassigned}}</option>
+            <sc-for list="{{peopleNames}}" as="n" hint-placeholder-count="3"><option value="{{n}}">{{n}}</option></sc-for>
+          </select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.dueDate}}</span>
+          <input type="date" value="{{draft.due}}" onChange="{{dDue}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 9px 12px; font-size: 14px; font-weight: 500; color: #17161A">
+        </label>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px">
+        <button class="btn" onClick="{{closeModal}}" style="height: 42px; padding: 0 16px; border-radius: 12px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">{{L.cancel}}</button>
+        <button class="btn" onClick="{{saveTask}}" style="height: 42px; padding: 0 18px; border-radius: 12px; border: 0; background: #6B5CE7; color: #FFFFFF; font-weight: 400; font-size: 14px">{{L.createTask}}</button>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- PROJECT MODAL -->
+  <sc-if value="{{projectModalOpen}}" hint-placeholder-val="{{false}}">
+    <div onClick="{{closeModal}}" style="position: fixed; inset: 0; background: rgba(23,22,26,.45); z-index: 30"></div>
+    <section aria-label="{{L.projectForm}}" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); width: min(520px, calc(100% - 32px)); background: #FFFFFF; border-radius: 20px; padding: 24px 26px; z-index: 31; box-shadow: 0 20px 60px rgba(23,22,26,.25); display: flex; flex-direction: column; gap: 14px; box-sizing: border-box">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <h2 style="margin: 0; font-size: 22px; font-weight: 400; letter-spacing: -0.02em">{{projectModalTitle}}</h2>
+        <button aria-label="{{L.close}}" onClick="{{closeModal}}" style="margin-left: auto; width: 36px; height: 36px; border-radius: 10px; border: 1px solid #E4E4EC; background: #FFFFFF; display: grid; place-items: center; color: #17161A">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+      <sc-if value="{{modalErrOn}}" hint-placeholder-val="{{false}}"><div style="color: #9A2E1B; background: #FFE3DC; border-radius: 10px; padding: 8px 12px; font-size: 13px; font-weight: 500">{{modalErr}}</div></sc-if>
+      <div style="display: grid; grid-template-columns: 120px 1fr; gap: 12px">
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.key}}</span>
+          <input type="text" value="{{pdraft.key}}" onChange="{{pKey}}" placeholder="NOVA" maxlength="5" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 12px; font-size: 14px; text-transform: uppercase; outline: 0; color: #17161A; min-width: 0">
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 5px">
+          <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.name}}</span>
+          <input type="text" value="{{pdraft.name}}" onChange="{{pName}}" placeholder="{{L.phProjectName}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 14px; font-size: 16px; font-weight: 400; outline: 0; color: #17161A; min-width: 0">
+        </label>
+      </div>
+      <label style="display: flex; flex-direction: column; gap: 5px">
+        <span style="font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6A72; font-weight: 400">{{L.goal}}</span>
+        <textarea value="{{pdraft.desc}}" onChange="{{pDesc}}" placeholder="{{L.phGoal}}" style="border: 1px solid #E4E4EC; background: #F8F8FC; border-radius: 12px; padding: 10px 14px; font-size: 14px; min-height: 70px; resize: vertical; outline: 0; color: #17161A"></textarea>
+      </label>
+      <div style="display: flex; gap: 8px; margin-top: 4px">
+        <sc-if value="{{pdraft.editing}}" hint-placeholder-val="{{false}}"><button class="btn" onClick="{{deleteDraftProject}}" style="height: 42px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #9A2E1B">{{L.deleteProject}}</button></sc-if>
+        <div style="flex: 1"></div>
+        <button class="btn" onClick="{{closeModal}}" style="height: 42px; padding: 0 16px; border-radius: 12px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">{{L.cancel}}</button>
+        <button class="btn" onClick="{{saveProject}}" style="height: 42px; padding: 0 18px; border-radius: 12px; border: 0; background: #6B5CE7; color: #FFFFFF; font-weight: 400; font-size: 14px">{{projectModalCta}}</button>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- CONFIRM -->
+  <sc-if value="{{confirmOpen}}" hint-placeholder-val="{{false}}">
+    <div onClick="{{cancelConfirm}}" style="position: fixed; inset: 0; background: rgba(23,22,26,.45); z-index: 40"></div>
+    <section aria-label="{{L.confirm}}" style="position: fixed; top: 120px; left: 50%; transform: translateX(-50%); width: min(420px, calc(100% - 32px)); background: #FFFFFF; border-radius: 20px; padding: 24px 26px; z-index: 41; box-shadow: 0 20px 60px rgba(23,22,26,.25); display: flex; flex-direction: column; gap: 14px; box-sizing: border-box">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 400; letter-spacing: -0.02em">{{confirmTitle}}</h2>
+      <p style="margin: 0; color: #6B6A72">{{confirmText}}</p>
+      <div style="display: flex; justify-content: flex-end; gap: 8px">
+        <button class="btn" onClick="{{cancelConfirm}}" style="height: 42px; padding: 0 16px; border-radius: 12px; border: 1px solid #E4E4EC; background: #FFFFFF; font-weight: 400; font-size: 14px; color: #17161A">{{L.keep}}</button>
+        <button class="btn" onClick="{{doConfirm}}" style="height: 42px; padding: 0 18px; border-radius: 12px; border: 0; background: #E2503B; color: #FFFFFF; font-weight: 400; font-size: 14px">{{L.delete}}</button>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{toastOn}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px; background: #17161A; color: #FFFFFF; padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 50; display: flex; align-items: center; gap: 12px">
+      <span>{{toast}}</span>
+      <sc-if value="{{canUndo}}" hint-placeholder-val="{{false}}"><button onClick="{{undo}}" style="border: 0; background: none; color: #F7D84E; font-weight: 400; padding: 0">{{L.undo}}</button></sc-if>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1060}}'>
+var STATUSES = ['To Do', 'In Progress', 'Done'];
+var SCOLOR = { 'To Do': '#8D8B95', 'In Progress': '#6B5CE7', 'Done': '#1E9E5A' };
+var PRI = { high: 'High', medium: 'Medium', low: 'Low' };
+var CATS = ['Product', 'Timesheets', 'Billing', 'Design', 'Marketing'];
+var CATSTYLE = { Product: ['#ECE9FF', '#4A3DBB'], Timesheets: ['#DDF3FF', '#0B5C8A'], Billing: ['#FFF1C2', '#6A4E00'], Design: ['#DFF7E8', '#135E36'], Marketing: ['#FFE3DC', '#9A2E1B'] };
+var PRISTYLE = { high: ['#FFE3DC', '#9A2E1B'], medium: ['#FFF1C2', '#6A4E00'], low: ['#DFF7E8', '#135E36'] };
+var KEYSTYLE = ['#F7D84E|#17161A', '#ECE9FF|#4A3DBB', '#FFE3DC|#9A2E1B', '#DDF3FF|#0B5C8A', '#DFF7E8|#135E36', '#FFF1C2|#6A4E00'];
+var COLORS = ['#6B4EA8', '#3F7A7D', '#4C8A3F', '#C76B2A', '#B23B3B', '#6B5CE7', '#5A4FB0'];
+var ME = 'Emma Johnson';
+var T = {
+  en: { overview: 'Overview', work: 'Work', dashboard: 'Dashboard', projects: 'Projects', boards: 'Boards', tasks: 'Tasks', reports: 'Reports', allWork: 'All work', doneL: 'done', role: 'Product lead', resetDemo: 'Reset demo data', switchLang: 'Switch language', langLabel: 'ՀԱՅ',
+    newProject: 'New project', createTask: 'Create task', overdueTasks: 'Overdue tasks', keyNumbers: 'Key numbers', activeTasks: 'Active tasks', completed: 'Completed', overdue: 'Overdue', projectProgress: 'Project progress', allProjects: 'All projects', seeAll: 'See all',
+    noProjects: 'No projects yet. Create one to start.', nothingOverdue: 'Nothing is overdue.', withOpenWork: 'with open work', inProgressL: 'in progress', toDoL: 'to do', ofAllWork: 'of all work',
+    startProject: 'Start a new project', startProjectHint: 'Key, name and a one-line goal', openBoard: 'Open board', edit: 'Edit', delete: 'Delete', editProject: 'Edit project', breadcrumb: 'Breadcrumb', projectViews: 'Project views', switchProject: 'Switch project', complete: 'complete',
+    timeline: 'Timeline', backlog: 'Backlog', board: 'Board', list: 'List', category: 'Category', mine: 'Mine', clear: 'Clear', selected: 'selected', move: 'Move', clearSelection: 'Clear selection', moveSelectedTo: 'Move selected to',
+    addTask: 'Add a task', dropHere: 'Drop a card here', back: 'Back', start: 'Start', markDone: 'Mark done', commentsN: 'comments', key: 'Key', taskCol: 'Task', project: 'Project', assignee: 'Assignee', priority: 'Priority', due: 'Due', status: 'Status',
+    noMatch: 'No tasks match these filters.', nothingHere: 'Nothing here.', plusCreate: '+ Create', done: 'Done', inProgress: 'In progress', toDo: 'To do', today: 'Today', stTodo: 'To Do', stProg: 'In Progress', stDone: 'Done', allStatuses: 'All statuses',
+    totalTasks: 'Total tasks', avgProgress: 'Avg. progress', byProject: 'By project', byStatus: 'By status', byCategory: 'By category', byPriority: 'By priority', byAssignee: 'By assignee', noProject: 'No project',
+    taskDetails: 'Task details', duplicate: 'Duplicate', close: 'Close', created: 'Created', title: 'Title', description: 'Description', phDesc: 'Add context, links or acceptance criteria', checklist: 'Checklist', phCheck: 'Add an item and press Enter', add: 'Add', removeItem: 'Remove item', newCheckItem: 'New checklist item',
+    comments: 'Comments', phComment: 'Write a comment', newComment: 'New comment', comment: 'Comment', activity: 'Activity', unassigned: 'Unassigned', type: 'Type', dueDate: 'Due date', high: 'High', medium: 'Medium', low: 'Low', task: 'Task', bug: 'Bug',
+    catProduct: 'Product', catTimesheets: 'Timesheets', catBilling: 'Billing', catDesign: 'Design', catMarketing: 'Marketing',
+    newTask: 'New task', phTitle: 'What needs to be done?', phDesc2: 'Context, links, acceptance criteria', cancel: 'Cancel', errTitle: 'Give the task a title.', errProject: 'Pick a project.',
+    projectForm: 'Project form', name: 'Name', goal: 'Goal', phProjectName: 'Project name', phGoal: 'One line on what this project delivers', deleteProject: 'Delete project', saveChanges: 'Save changes', createProject: 'Create project', errKeyName: 'Key and name are required.', errKeyUsed: 'Key {k} is already used by {n}.',
+    confirm: 'Confirm', keep: 'Keep', undo: 'Undo', movedTo: 'moved to', createdT: 'created', deletedT: 'deleted', projectUpdated: 'Project updated', projectDeleted: 'Project deleted', demoRestored: 'Demo data restored', tasksMovedTo: '{n} task(s) moved to {s}',
+    delQ: 'Delete {x}?', delProjTasks: 'Its {n} tasks will be deleted too. This cannot be undone.', cannotUndo: 'This cannot be undone.', delTaskText: '"{t}" will be removed from the board.', delNQ: 'Delete {n} task(s)?', delNText: 'They will be removed from their boards.',
+    resetQ: 'Reset demo data?', resetText: 'All projects and tasks go back to the sample set. Your changes will be lost.',
+    goodMorning: 'Good morning', goodAfternoon: 'Good afternoon', goodEvening: 'Good evening', summaryLate: '{n} task(s) slipped past the date and {m} project(s) are mid-flight. Overdue work is listed first.', summaryOk: 'Nothing is overdue. {m} project(s) are mid-flight.',
+    oldestLate: 'Oldest is {n} days late', allOnTime: 'Everything is on time', ofDone: '{d} of {n} done', nOverdue: '{n} overdue', nOpen: '{n} open', badgeActive: 'Active', badgeEmpty: 'Empty', badgeComplete: 'Complete', badgePlanning: 'Planning',
+    projectsLine: '{p} projects · {t} tasks · {u} people', tasksLine: '{a} of {n} tasks across all projects', reportsLine: 'Across all {n} projects', searchProj: 'Search {k} tasks', searchAll: 'Search all tasks', searchTasks: 'Search tasks',
+    dLate: '{n}d late', dueOn: 'Due {d}', noDate: 'No date', doneBar: 'done', logCreated: 'Created by {u}', logMoved: '{u} moved {a} to {b}', logAssigned: '{u} assigned to {v}', logDue: '{u} set due date to {d}', logPriority: '{u} set priority to {p}', logProject: '{u} moved task to {p}', logCommented: '{u} commented', logDuplicated: 'Duplicated from {k} by {u}', nobody: 'nobody', copy: '(copy)' },
+  hy: { overview: 'Ընդհանուր', work: 'Աշխատանք', dashboard: 'Վահանակ', projects: 'Նախագծեր', boards: 'Տախտակներ', tasks: 'Առաջադրանքներ', reports: 'Հաշվետվություններ', allWork: 'Ամբողջ աշխատանքը', doneL: 'կատարված', role: 'Պրոդուկտի ղեկավար', resetDemo: 'Վերականգնել ցուցադրական տվյալները', switchLang: 'Փոխել լեզուն', langLabel: 'EN',
+    newProject: 'Նոր նախագիծ', createTask: 'Ստեղծել առաջադրանք', overdueTasks: 'Ժամկետանց առաջադրանքներ', keyNumbers: 'Հիմնական թվեր', activeTasks: 'Ակտիվ առաջադրանքներ', completed: 'Ավարտված', overdue: 'Ժամկետանց', projectProgress: 'Նախագծերի ընթացք', allProjects: 'Բոլոր նախագծերը', seeAll: 'Տեսնել բոլորը',
+    noProjects: 'Դեռ նախագծեր չկան։ Ստեղծեք առաջինը։', nothingOverdue: 'Ժամկետանց ոչինչ չկա։', withOpenWork: 'բաց աշխատանքով', inProgressL: 'ընթացքում', toDoL: 'անելիք', ofAllWork: 'ամբողջ աշխատանքից',
+    startProject: 'Սկսել նոր նախագիծ', startProjectHint: 'Բանալի, անվանում և մեկ տողով նպատակ', openBoard: 'Բացել տախտակը', edit: 'Խմբագրել', delete: 'Ջնջել', editProject: 'Խմբագրել նախագիծը', breadcrumb: 'Նավիգացիա', projectViews: 'Նախագծի տեսքեր', switchProject: 'Փոխել նախագիծը', complete: 'կատարված',
+    timeline: 'Ժամանակացույց', backlog: 'Բեքլոգ', board: 'Տախտակ', list: 'Ցուցակ', category: 'Կատեգորիա', mine: 'Իմը', clear: 'Մաքրել', selected: 'ընտրված', move: 'Տեղափոխել', clearSelection: 'Չեղարկել ընտրությունը', moveSelectedTo: 'Տեղափոխել ընտրվածները',
+    addTask: 'Ավելացնել առաջադրանք', dropHere: 'Քաշեք քարտը այստեղ', back: 'Հետ', start: 'Սկսել', markDone: 'Նշել կատարված', commentsN: 'մեկնաբանություն', key: 'Բանալի', taskCol: 'Առաջադրանք', project: 'Նախագիծ', assignee: 'Կատարող', priority: 'Առաջնահերթություն', due: 'Ժամկետ', status: 'Կարգավիճակ',
+    noMatch: 'Այս ֆիլտրերին համապատասխան առաջադրանքներ չկան։', nothingHere: 'Այստեղ ոչինչ չկա։', plusCreate: '+ Ստեղծել', done: 'Կատարված', inProgress: 'Ընթացքում', toDo: 'Անելիք', today: 'Այսօր', stTodo: 'Անելիք', stProg: 'Ընթացքում', stDone: 'Կատարված', allStatuses: 'Բոլոր կարգավիճակները',
+    totalTasks: 'Ընդամենը առաջադրանքներ', avgProgress: 'Միջին ընթացք', byProject: 'Ըստ նախագծի', byStatus: 'Ըստ կարգավիճակի', byCategory: 'Ըստ կատեգորիայի', byPriority: 'Ըստ առաջնահերթության', byAssignee: 'Ըստ կատարողի', noProject: 'Առանց նախագծի',
+    taskDetails: 'Առաջադրանքի մանրամասներ', duplicate: 'Կրկնօրինակել', close: 'Փակել', created: 'Ստեղծվել է', title: 'Վերնագիր', description: 'Նկարագրություն', phDesc: 'Ավելացրեք համատեքստ, հղումներ կամ ընդունման չափանիշներ', checklist: 'Ստուգաթերթ', phCheck: 'Ավելացրեք կետ և սեղմեք Enter', add: 'Ավելացնել', removeItem: 'Հեռացնել կետը', newCheckItem: 'Ստուգաթերթի նոր կետ',
+    comments: 'Մեկնաբանություններ', phComment: 'Գրեք մեկնաբանություն', newComment: 'Նոր մեկնաբանություն', comment: 'Մեկնաբանել', activity: 'Գործողություններ', unassigned: 'Չնշանակված', type: 'Տեսակ', dueDate: 'Վերջնաժամկետ', high: 'Բարձր', medium: 'Միջին', low: 'Ցածր', task: 'Առաջադրանք', bug: 'Սխալ',
+    catProduct: 'Պրոդուկտ', catTimesheets: 'Ժամանակաթերթիկներ', catBilling: 'Վճարումներ', catDesign: 'Դիզայն', catMarketing: 'Մարքեթինգ',
+    newTask: 'Նոր առաջադրանք', phTitle: 'Ի՞նչ է պետք անել', phDesc2: 'Համատեքստ, հղումներ, ընդունման չափանիշներ', cancel: 'Չեղարկել', errTitle: 'Տվեք առաջադրանքին վերնագիր։', errProject: 'Ընտրեք նախագիծ։',
+    projectForm: 'Նախագծի ձև', name: 'Անվանում', goal: 'Նպատակ', phProjectName: 'Նախագծի անվանում', phGoal: 'Մեկ տողով՝ ինչ է տալիս այս նախագիծը', deleteProject: 'Ջնջել նախագիծը', saveChanges: 'Պահպանել փոփոխությունները', createProject: 'Ստեղծել նախագիծ', errKeyName: 'Բանալին և անվանումը պարտադիր են։', errKeyUsed: '{k} բանալին արդեն օգտագործվում է «{n}» նախագծում։',
+    confirm: 'Հաստատում', keep: 'Թողնել', undo: 'Հետարկել', movedTo: 'տեղափոխվել է՝', createdT: 'ստեղծվել է', deletedT: 'ջնջվել է', projectUpdated: 'Նախագիծը թարմացվել է', projectDeleted: 'Նախագիծը ջնջվել է', demoRestored: 'Ցուցադրական տվյալները վերականգնվել են', tasksMovedTo: '{n} առաջադրանք տեղափոխվել է՝ {s}',
+    delQ: 'Ջնջե՞լ {x}-ը', delProjTasks: 'Դրա {n} առաջադրանքները նույնպես կջնջվեն։ Սա հնարավոր չէ հետարկել։', cannotUndo: 'Սա հնարավոր չէ հետարկել։', delTaskText: '«{t}»-ը կհեռացվի տախտակից։', delNQ: 'Ջնջե՞լ {n} առաջադրանք', delNText: 'Դրանք կհեռացվեն իրենց տախտակներից։',
+    resetQ: 'Վերականգնե՞լ ցուցադրական տվյալները', resetText: 'Բոլոր նախագծերն ու առաջադրանքները կվերադառնան նմուշային տվյալներին։ Ձեր փոփոխությունները կկորչեն։',
+    goodMorning: 'Բարի լույս', goodAfternoon: 'Բարի օր', goodEvening: 'Բարի երեկո', summaryLate: '{n} առաջադրանք անցել է ժամկետը, {m} նախագիծ ընթացքի մեջ է։ Ժամկետանց աշխատանքը ցուցադրված է առաջինը։', summaryOk: 'Ժամկետանց ոչինչ չկա։ {m} նախագիծ ընթացքի մեջ է։',
+    oldestLate: 'Ամենահինը {n} օր ուշացած է', allOnTime: 'Ամեն ինչ ժամանակին է', ofDone: '{d} / {n} կատարված', nOverdue: '{n} ժամկետանց', nOpen: '{n} բաց', badgeActive: 'Ակտիվ', badgeEmpty: 'Դատարկ', badgeComplete: 'Ավարտված', badgePlanning: 'Պլանավորում',
+    projectsLine: '{p} նախագիծ · {t} առաջադրանք · {u} մարդ', tasksLine: '{a} / {n} առաջադրանք բոլոր նախագծերում', reportsLine: 'Բոլոր {n} նախագծերում', searchProj: 'Որոնել {k}-ի առաջադրանքները', searchAll: 'Որոնել բոլոր առաջադրանքները', searchTasks: 'Որոնել առաջադրանքներ',
+    dLate: '{n} օր ուշ', dueOn: 'Ժամկետ՝ {d}', noDate: 'Ամսաթիվ չկա', doneBar: 'կատարված', logCreated: 'Ստեղծել է {u}', logMoved: '{u}-ը տեղափոխել է {a} → {b}', logAssigned: '{u}-ը նշանակել է {v}', logDue: '{u}-ը սահմանել է ժամկետ՝ {d}', logPriority: '{u}-ը սահմանել է առաջնահերթություն՝ {p}', logProject: '{u}-ը տեղափոխել է առաջադրանքը «{p}»', logCommented: '{u}-ը մեկնաբանել է', logDuplicated: 'Կրկնօրինակվել է {k}-ից ({u})', nobody: 'ոչ ոքի', copy: '(պատճեն)' }
+};
+var LANG = 'en';
+try { var sl = window.localStorage.getItem('orbitly-lang'); if (sl === 'hy' || sl === 'en') LANG = sl; } catch (e) {}
+function t_(k, v) { var s = (T[LANG] && T[LANG][k]) || T.en[k] || k; if (v) Object.keys(v).forEach(function (x) { s = s.split('{' + x + '}').join(v[x]); }); return s; }
+var t = t_;
+function locale() { return LANG === 'hy' ? 'hy-AM' : 'en-US'; }
+function stName(s) { return s === 'To Do' ? t('stTodo') : s === 'In Progress' ? t('stProg') : t('stDone'); }
+function catName(c) { return t('cat' + c); }
+
+function uid() { return Math.random().toString(36).slice(2, 10); }
+function todayStr() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function addDays(n, from) { var d = from ? new Date(from + 'T00:00:00') : new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function fmt(s) { return s ? new Date(s + 'T00:00:00').toLocaleDateString(locale(), { day: 'numeric', month: 'short' }) : t('noDate'); }
+function fmtAt(s) { return new Date(s).toLocaleString(locale(), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
+function ini(n) { return (n || '?').trim().split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase(); }
+function colorOf(n) { var h = 0; for (var i = 0; i < (n || '').length; i++) h = (h * 31 + n.charCodeAt(i)) >>> 0; return COLORS[h % COLORS.length]; }
+function first(n) { return (n || '').split(' ')[0]; }
+function daysBetween(a, b) { return Math.round((new Date(a + 'T00:00:00') - new Date(b + 'T00:00:00')) / 864e5); }
+
+function seed() {
+  var P = function (key, name, desc) { return { id: uid(), key: key, name: name, desc: desc, counter: 0 }; };
+  var p = [P('NOVA', 'Nova Mobile App', 'Rebuild of the Nova customer app for iOS and Android.'),
+    P('ATL', 'Atlas Billing Platform', 'Subscription billing engine with invoicing and dunning.'),
+    P('ORB', 'Orbit Expo 2026', 'Company booth, demo stations and lead capture for the Orbit Expo.'),
+    P('HELX', 'Helix Customer Portal', 'Self-service portal for ticketing, documents and account settings.'),
+    P('LUM', 'Lumen Analytics', 'Internal reporting and KPI dashboards for the leadership team.')];
+  var rows = [
+    [0, 'Upgrade Subscription modal shows conflicting seat requirements', 'James Smith', 'medium', 9, 'To Do', 'Billing', 'bug', 'Minimum required seats exceeds the selected plan maximum.', ['Reproduce on staging', 'Check plan limits API']],
+    [0, 'User Roles section in Settings shows blank on limited plans', 'Olivia Brown', 'medium', 12, 'To Do', 'Product', 'bug', 'Reproduces when only the Tasks module is enabled.', []],
+    [0, 'Synchronize system autosave with payment webhooks', 'Emma Johnson', 'high', 3, 'In Progress', 'Billing', 'task', '', ['Map webhook events', 'Write retry logic', 'QA on sandbox']],
+    [0, 'CV Builder: datepicker standardization and download fixes', 'Michael Davis', 'medium', 6, 'In Progress', 'Product', 'task', '', []],
+    [0, '"Log time" button missing from Timesheets page', 'Sarah Wilson', 'high', -1, 'To Do', 'Timesheets', 'bug', 'The button disappears when the week has no entries.', []],
+    [0, 'Write user stories for the onboarding flow', 'Emma Johnson', 'high', -3, 'In Progress', 'Product', 'task', 'Cover sign-up, email verification and the first-run tutorial.', ['Sign-up story', 'Verification story', 'Tutorial story']],
+    [0, 'Design the home screen widgets', 'Michael Davis', 'medium', 4, 'To Do', 'Design', 'task', '', []],
+    [0, 'Prepare release notes v2.0', 'Emma Johnson', 'low', -2, 'Done', 'Marketing', 'task', '', []],
+    [1, 'Draft the invoice PDF template', 'David Miller', 'low', 7, 'To Do', 'Design', 'task', '', []],
+    [1, 'Proration bug on mid-cycle upgrades', 'James Smith', 'high', 2, 'In Progress', 'Billing', 'bug', 'Upgrades on the 31st produce negative line items.', []],
+    [1, 'Integrate the payment gateway webhooks', 'James Smith', 'medium', -5, 'Done', 'Billing', 'task', '', []],
+    [2, 'Approve the booth visual design', 'David Miller', 'high', 1, 'In Progress', 'Design', 'task', 'Final artwork for the print vendor.', []],
+    [2, 'Build the lead capture form', 'Emma Johnson', 'medium', 6, 'To Do', 'Marketing', 'task', 'QR-code form for booth visitors.', []],
+    [2, 'Order printed materials', 'Michael Davis', 'medium', -2, 'To Do', 'Marketing', 'task', '', []],
+    [3, 'Collect portal requirements from support', 'Emma Johnson', 'high', -8, 'Done', 'Product', 'task', '', []],
+    [3, 'Login page mockup', 'David Miller', 'medium', 5, 'To Do', 'Design', 'task', '', []],
+    [4, 'Agree on the monthly report format', 'Sarah Wilson', 'medium', -4, 'In Progress', 'Product', 'task', 'Final layout with the finance team.', []],
+    [4, 'Automate the CSV export job', 'James Smith', 'low', 14, 'To Do', 'Timesheets', 'task', '', []],
+    [4, 'Train the finance team on dashboards', 'Sarah Wilson', 'low', -6, 'Done', 'Product', 'task', '', []]
+  ];
+  var t = rows.map(function (r, i) {
+    var pj = p[r[0]]; pj.counter++; var created = addDays(-6 - (i % 7));
+    return { id: uid(), projectId: pj.id, key: pj.key + '-' + pj.counter, title: r[1], assignee: r[2], priority: r[3], due: addDays(r[4]), status: r[5], category: r[6], type: r[7], desc: r[8], created: created,
+      checklist: r[9].map(function (x, j) { return { id: uid(), text: x, done: j === 0 && r[9].length > 1 }; }),
+      comments: i % 3 === 0 ? [{ id: uid(), by: 'Michael Davis', text: 'Picked this up for the current sprint.', at: new Date(created + 'T10:00:00').toISOString() }] : [],
+      activity: [{ at: new Date(created + 'T09:00:00').toISOString(), text: t_('logCreated', { u: r[2] }) }] };
+  });
+  return { projects: p, tasks: t, currentProject: p[0].id };
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var s = null;
+    try { var raw = window.localStorage.getItem('orbitly-app-v2'); if (raw) { s = JSON.parse(raw); if (!s || !Array.isArray(s.projects) || !Array.isArray(s.tasks)) s = null; } } catch (e) { s = null; }
+    if (!s) s = seed();
+    this.state = { projects: s.projects, tasks: s.tasks, currentProject: s.currentProject || (s.projects[0] || {}).id || null, view: 'dashboard', tab: 'board',
+      f: { q: '', assignee: '', late: false, cat: '', project: '', status: '' }, sortKey: 'due', sortDir: 1, sel: {}, bulkStatus: 'In Progress',
+      openId: null, modal: null, draft: null, pdraft: null, modalErr: '', confirm: null, toast: '', undo: null, newCheck: '', newComment: '', overCol: '', rev: 0, lang: LANG };
+    this.dragId = null;
+    this.toastTimer = null;
+  }
+  persist() { try { window.localStorage.setItem('orbitly-app-v2', JSON.stringify({ projects: this.state.projects, tasks: this.state.tasks, currentProject: this.state.currentProject })); } catch (e) {} }
+  commit(extra) { this.setState(Object.assign({ rev: this.state.rev + 1 }, extra || {})); this.persist(); }
+  toggleLang() { LANG = LANG === 'en' ? 'hy' : 'en'; try { window.localStorage.setItem('orbitly-lang', LANG); } catch (e) {} this.setState({ lang: LANG }); }
+  resetDemo() {
+    var self = this;
+    this.setState({ confirm: { title: t('resetQ'), text: t('resetText'), run: function () {
+      var s = seed(); try { window.localStorage.removeItem('orbitly-app-v2'); } catch (e) {}
+      self.setState({ projects: s.projects, tasks: s.tasks, currentProject: s.currentProject, view: 'dashboard', openId: null, confirm: null, sel: {}, rev: self.state.rev + 1 }); self.say(t('demoRestored'));
+    } } });
+  }
+  toggleSel(id) { var sel = Object.assign({}, this.state.sel); if (sel[id]) delete sel[id]; else sel[id] = true; this.setState({ sel: sel }); }
+  bulkMove(s) { var self = this; var ids = Object.keys(this.state.sel); var n = 0; ids.forEach(function (id) { var t = self.task(id); if (t && t.status !== s) { self.log(t, t_('logMoved', { u: ME, a: stName(t.status), b: stName(s) })); t.status = s; n++; } }); this.commit({ sel: {} }); this.say(t_('tasksMovedTo', { n: n, s: stName(s) })); }
+  bulkDelete() {
+    var self = this; var ids = Object.keys(this.state.sel); if (!ids.length) return;
+    this.setState({ confirm: { title: t('delNQ', { n: ids.length }), text: t('delNText'), run: function () {
+      var removed = self.state.tasks.filter(function (t) { return self.state.sel[t.id]; });
+      self.state.tasks = self.state.tasks.filter(function (t) { return !self.state.sel[t.id]; });
+      self.commit({ confirm: null, sel: {}, openId: null });
+      self.say(removed.length + ' ' + t('deletedT'), function () { self.state.tasks = removed.concat(self.state.tasks); self.commit({ toast: '', undo: null }); });
+    } } });
+  }
+  sortBy(k) { if (this.state.sortKey === k) this.setState({ sortDir: -this.state.sortDir }); else this.setState({ sortKey: k, sortDir: 1 }); }
+  sorted(rows) {
+    var k = this.state.sortKey, dir = this.state.sortDir, order = { high: 0, medium: 1, low: 2 }, so = { 'To Do': 0, 'In Progress': 1, 'Done': 2 };
+    var val = function (t) { if (k === 'priority') return order[t.priority]; if (k === 'status') return so[t.status]; if (k === 'project') return t.projectName; if (k === 'key') return t.key; return (t[k] || '').toString().toLowerCase(); };
+    return rows.slice().sort(function (a, b) { var x = val(a), y = val(b); if (x < y) return -dir; if (x > y) return dir; return a.key.localeCompare(b.key); });
+  }
+  say(msg, undo) {
+    var self = this;
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.setState({ toast: msg, undo: undo || null });
+    this.toastTimer = setTimeout(function () { self.setState({ toast: '', undo: null }); }, 4000);
+  }
+  task(id) { return this.state.tasks.find(function (t) { return t.id === id; }); }
+  proj(id) { return this.state.projects.find(function (p) { return p.id === id; }); }
+  log(t, text) { t.activity.unshift({ at: new Date().toISOString(), text: text }); }
+  isDone(t) { return t.status === 'Done'; }
+  isLate(t) { return !this.isDone(t) && t.due && t.due < todayStr(); }
+  pTasks(pid) { return this.state.tasks.filter(function (t) { return t.projectId === pid; }); }
+  prog(pid) { var ts = this.pTasks(pid); var self = this; return ts.length ? Math.round(ts.filter(function (t) { return self.isDone(t); }).length / ts.length * 100) : 0; }
+  setStatus(t, s) { if (t.status === s) return; this.log(t, t_('logMoved', { u: ME, a: stName(t.status), b: stName(s) })); t.status = s; this.commit(); this.say(t.key + ' ' + t_('movedTo') + ' ' + stName(s)); }
+  go(view, extra) { this.setState(Object.assign({ view: view, openId: null }, extra || {})); }
+  openProject(pid, tab) { this.setState({ view: 'project', currentProject: pid, tab: tab || this.state.tab, openId: null, f: { q: '', assignee: '', late: false, cat: '', project: '', status: '' } }); }
+  setF(k, v) { var f = Object.assign({}, this.state.f); f[k] = v; this.setState({ f: f }); }
+  applyFilters(ts) {
+    var f = this.state.f, self = this, l = ts;
+    if (f.q) { var q = f.q.toLowerCase(); l = l.filter(function (t) { return (t.title + ' ' + t.key + ' ' + (t.desc || '') + ' ' + t.category + ' ' + t.assignee).toLowerCase().indexOf(q) >= 0; }); }
+    if (f.assignee) l = l.filter(function (t) { return t.assignee === f.assignee; });
+    if (f.late) l = l.filter(function (t) { return self.isLate(t); });
+    if (f.cat) l = l.filter(function (t) { return t.category === f.cat; });
+    if (f.project) l = l.filter(function (t) { return t.projectId === f.project; });
+    if (f.status) l = l.filter(function (t) { return t.status === f.status; });
+    return l;
+  }
+  openTaskModal(status, pid) {
+    this.setState({ modal: 'task', modalErr: '', draft: { title: '', desc: '', projectId: pid || this.state.currentProject || (this.state.projects[0] || {}).id || '', status: status || 'To Do', type: 'task', priority: 'medium', category: 'Product', assignee: ME, due: addDays(7) } });
+  }
+  saveTask() {
+    var d = this.state.draft; if (!d.title.trim()) { this.setState({ modalErr: t_('errTitle') }); return; }
+    var p = this.proj(d.projectId); if (!p) { this.setState({ modalErr: t_('errProject') }); return; }
+    p.counter++;
+    var t = { id: uid(), projectId: p.id, key: p.key + '-' + p.counter, title: d.title.trim(), desc: d.desc, status: d.status, type: d.type, priority: d.priority, category: d.category, assignee: d.assignee, due: d.due, created: todayStr(), checklist: [], comments: [], activity: [{ at: new Date().toISOString(), text: t_('logCreated', { u: ME }) }] };
+    this.state.tasks.unshift(t);
+    this.commit({ modal: null, draft: null });
+    this.say(t.key + ' ' + t_('createdT'));
+  }
+  openProjectModal(p) {
+    this.setState({ modal: 'project', modalErr: '', pdraft: p ? { id: p.id, key: p.key, name: p.name, desc: p.desc, editing: true } : { id: null, key: '', name: '', desc: '', editing: false } });
+  }
+  saveProject() {
+    var d = this.state.pdraft; var key = d.key.trim().toUpperCase();
+    if (!key || !d.name.trim()) { this.setState({ modalErr: t('errKeyName') }); return; }
+    var clash = this.state.projects.find(function (p) { return p.key === key && p.id !== d.id; });
+    if (clash) { this.setState({ modalErr: t('errKeyUsed', { k: key, n: clash.name }) }); return; }
+    if (d.editing) {
+      var p = this.proj(d.id); var oldKey = p.key; p.key = key; p.name = d.name.trim(); p.desc = d.desc.trim();
+      if (oldKey !== key) this.state.tasks.forEach(function (t) { if (t.projectId === p.id) t.key = key + '-' + t.key.split('-').pop(); });
+      this.commit({ modal: null, pdraft: null }); this.say(t('projectUpdated'));
+    } else {
+      var np = { id: uid(), key: key, name: d.name.trim(), desc: d.desc.trim(), counter: 0 };
+      this.state.projects.push(np);
+      this.commit({ modal: null, pdraft: null, view: 'project', currentProject: np.id, tab: 'board' }); this.say(np.name + ' ' + t('createdT'));
+    }
+  }
+  askDeleteProject(pid) {
+    var p = this.proj(pid); if (!p) return; var n = this.pTasks(pid).length; var self = this;
+    this.setState({ modal: null, confirm: { title: t('delQ', { x: p.name }), text: n ? t('delProjTasks', { n: n }) : t('cannotUndo'), run: function () {
+      self.state.projects = self.state.projects.filter(function (x) { return x.id !== pid; });
+      self.state.tasks = self.state.tasks.filter(function (t) { return t.projectId !== pid; });
+      var next = self.state.projects[0];
+      self.commit({ confirm: null, view: 'projects', currentProject: next ? next.id : null, openId: null }); self.say(t('projectDeleted'));
+    } } });
+  }
+  askDeleteTask(id) {
+    var t = this.task(id); if (!t) return; var self = this;
+    this.setState({ confirm: { title: t_('delQ', { x: t.key }), text: t_('delTaskText', { t: t.title }), run: function () {
+      var idx = self.state.tasks.indexOf(t);
+      self.state.tasks.splice(idx, 1);
+      self.commit({ confirm: null, openId: null });
+      self.say(t.key + ' ' + t_('deletedT'), function () { self.state.tasks.splice(idx, 0, t); self.commit({ toast: '', undo: null }); });
+    } } });
+  }
+  deco(t) {
+    var self = this; var late = this.isLate(t); var done = this.isDone(t); var p = this.proj(t.projectId) || {};
+    var cs = CATSTYLE[t.category] || ['#F4F4F8', '#17161A']; var ps = PRISTYLE[t.priority];
+    var cl = t.checklist || []; var clDone = cl.filter(function (c) { return c.done; }).length; var pct = cl.length ? Math.round(clDone / cl.length * 100) : 0;
+    var lateDays = late ? daysBetween(todayStr(), t.due) : 0;
+    var idx = STATUSES.indexOf(t.status);
+    var av = function (sz) { return 'width: ' + sz + 'px; height: ' + sz + 'px; border-radius: 50%; background: ' + colorOf(t.assignee) + '; color: #FFFFFF; display: inline-grid; place-items: center; font-size: 10px; font-weight: 400; flex: 0 0 auto;'; };
+    return Object.assign({}, t, {
+      projectName: p.name || '', projectKey: p.key || '', late: late, done: done,
+      lateLabel: t_('dLate', { n: lateDays }),
+      dueLabel: late ? t_('dLate', { n: lateDays }) : done ? t_('done') : t_('dueOn', { d: fmt(t.due) }),
+      dueStyle: 'margin-left: auto; font-size: 12px; font-weight: 400; border-radius: 8px; padding: 3px 9px; white-space: nowrap; ' + (late ? 'color: #9A2E1B; background: #FFE3DC;' : done ? 'color: #135E36; background: #DFF7E8;' : 'color: #6B6A72; background: #F4F4F8;'),
+      dueTextStyle: 'font-size: 13px; white-space: nowrap; ' + (late ? 'color: #E2503B; font-weight: 400;' : 'color: #6B6A72;'),
+      createdLabel: fmt(t.created),
+      ini: ini(t.assignee || t_('unassigned')), avStyle: av(30), avStyleSm: av(28) + ' margin-left: auto;',
+      catLabel: catName(t.category), catStyle: 'font-size: 12px; font-weight: 400; border-radius: 8px; padding: 4px 10px; white-space: nowrap; background: ' + cs[0] + '; color: ' + cs[1] + ';',
+      priLabel: t_(t.priority), priStyle: 'font-size: 12px; font-weight: 400; border-radius: 8px; padding: 4px 10px; background: ' + ps[0] + '; color: ' + ps[1] + ';',
+      typeLabel: t.type === 'bug' ? t_('bug') : t_('task'), typeStyle: 'font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; border-radius: 6px; padding: 2px 7px; ' + (t.type === 'bug' ? 'background: #FFE3DC; color: #9A2E1B;' : 'background: #ECE9FF; color: #4A3DBB;'),
+      hasChecklist: cl.length > 0, clLabel: clDone + ' / ' + cl.length, clStyle: 'display: block; height: 100%; border-radius: 99px; background: #6B5CE7; width: ' + pct + '%;',
+      hasComments: (t.comments || []).length > 0, nComments: (t.comments || []).length,
+      dotStyle: 'width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; background: ' + SCOLOR[t.status] + ';',
+      cardStyle: 'background: #FFFFFF; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 2px rgba(23,22,26,.05); cursor: grab;' + (done ? ' opacity: .75; text-decoration: line-through;' : ''),
+      canBack: idx > 0, canFwd: idx < 2, fwdLabel: idx === 0 ? t_('start') : t_('markDone'),
+      open: function () { self.setState({ openId: t.id, newCheck: '', newComment: '' }); },
+      openProject: function () { self.openProject(t.projectId, 'board'); },
+      selected: !!self.state.sel[t.id], toggleSel: function () { self.toggleSel(t.id); },
+      onStatus: function (e) { self.setStatus(t, e.target.value); },
+      back: function () { self.setStatus(t, STATUSES[idx - 1]); },
+      fwd: function () { self.setStatus(t, STATUSES[idx + 1]); },
+      dragStart: function (e) { self.dragId = t.id; try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', t.id); } catch (err) {} },
+      dragEnd: function () { self.dragId = null; self.setState({ overCol: '' }); }
+    });
+  }
+  renderVals() {
+    var S = this.state, self = this, f = S.f, tod = todayStr();
+    var all = S.tasks; var lateAll = all.filter(function (t) { return self.isLate(t); });
+    var cur = this.proj(S.currentProject) || S.projects[0] || null;
+    var view = S.view; if (view === 'project' && !cur) view = 'projects';
+    var navStyle = function (on) { return 'display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; width: 100%; text-align: left; border: 0; font-size: 15px; ' + (on ? 'background: rgba(255,255,255,.14); color: #FFFFFF; font-weight: 400;' : 'background: transparent; color: #E6E3FA; font-weight: 500;'); };
+    var mk = function (id, label, go, on, badge) { return { label: label, go: go, style: navStyle(on), dot: on ? '#F7D84E' : 'rgba(255,255,255,.35)', hasBadge: !!badge, badge: badge }; };
+    var nav1 = [mk('dashboard', t('dashboard'), function () { self.go('dashboard'); }, view === 'dashboard', lateAll.length)];
+    var nav2 = [
+      mk('projects', t('projects'), function () { self.go('projects'); }, view === 'projects'),
+      mk('board', t('boards'), function () { if (cur) self.openProject(cur.id, 'board'); else self.go('projects'); }, view === 'project'),
+      mk('tasks', t('tasks'), function () { self.go('tasks', { f: { q: '', assignee: '', late: false, cat: '', project: '', status: '' } }); }, view === 'tasks'),
+      mk('reports', t('reports'), function () { self.go('reports'); }, view === 'reports')
+    ];
+    var peopleOf = function (ts) { var m = {}; ts.forEach(function (t) { if (t.assignee) m[t.assignee] = 1; }); return Object.keys(m).sort(); };
+    var avStyle = function (n, sz, stack) { return 'width: ' + sz + 'px; height: ' + sz + 'px; border-radius: 50%; background: ' + colorOf(n) + '; color: #FFFFFF; display: inline-grid; place-items: center; font-size: 10px; font-weight: 400;' + (stack ? ' border: 2px solid #F4F4F8; margin-left: -8px;' : ''); };
+    var keyStyle = function (p, sz, r) { var i = S.projects.indexOf(p); var c = KEYSTYLE[(i < 0 ? 0 : i) % KEYSTYLE.length].split('|'); return 'width: ' + sz + 'px; height: ' + sz + 'px; border-radius: ' + r + 'px; display: inline-grid; place-items: center; font-size: ' + (sz > 50 ? 13 : 11) + 'px; flex: 0 0 auto; background: ' + c[0] + '; color: ' + c[1] + ';'; };
+    var decoP = function (p) {
+      var ts = self.pTasks(p.id); var done = ts.filter(function (t) { return self.isDone(t); }).length; var ip = ts.filter(function (t) { return t.status === 'In Progress'; }).length; var late = ts.filter(function (t) { return self.isLate(t); }).length; var pct = self.prog(p.id);
+      return { id: p.id, key: p.key, name: p.name, desc: p.desc || '', pct: pct,
+        meta: t('ofDone', { d: done, n: ts.length }) + (late ? ' · ' + t('nOverdue', { n: late }) : ''),
+        badge: late ? t('nOverdue', { n: late }) : ts.length === 0 ? t('badgeEmpty') : pct === 100 ? t('badgeComplete') : ip ? t('badgeActive') : t('badgePlanning'),
+        keyStyle: keyStyle(p, 48, 12), keyStyleLg: keyStyle(p, 48, 14), keyStyleXl: keyStyle(p, 56, 16),
+        doneStyle: 'display: block; height: 100%; background: #1E9E5A; width: ' + pct + '%;',
+        progStyle: 'display: block; height: 100%; background: #6B5CE7; width: ' + (ts.length ? ip / ts.length * 100 : 0) + '%;',
+        pctStyle: 'display: block; height: 100%; border-radius: 99px; background: ' + (pct === 100 && ts.length ? '#1E9E5A' : '#6B5CE7') + '; width: ' + pct + '%;',
+        people: peopleOf(ts).map(function (n) { return { name: n, ini: ini(n), avStyle: avStyle(n, 28, false), avStyleStack: avStyle(n, 32, true) }; }),
+        open: function () { self.openProject(p.id, 'board'); },
+        edit: function () { self.openProjectModal(p); } };
+    };
+    var chip = function (on) { return 'display: inline-flex; align-items: center; height: 40px; padding: 0 12px; border-radius: 12px; font-weight: 400; font-size: 13px; ' + (on ? 'background: #ECE9FF; color: #4A3DBB; border: 1.5px solid #6B5CE7;' : 'background: #FFFFFF; color: #17161A; border: 1px solid #E4E4EC;'); };
+    var hasFilters = !!(f.q || f.assignee || f.late || f.cat || f.project || f.status);
+    var scopeTasks = view === 'project' ? this.pTasks(cur.id) : all;
+    var people = peopleOf(scopeTasks).map(function (n) { var on = f.assignee === n; return { name: n, ini: ini(n), pick: function () { self.setF('assignee', on ? '' : n); }, filterStyle: 'width: 36px; height: 36px; border-radius: 50%; margin-left: -6px; border: 2px solid ' + (on ? '#6B5CE7' : '#F4F4F8') + '; background: ' + colorOf(n) + '; color: #FFFFFF; font-size: 11px; font-weight: 400; display: grid; place-items: center;' + (on ? '' : ' opacity: .9;') }; });
+    var peopleNames = peopleOf(all);
+    var filtered = this.applyFilters(scopeTasks).map(function (t) { return self.deco(t); });
+    var byDue = function (a, b) { return (a.done - b.done) || (a.due || '9').localeCompare(b.due || '9'); };
+    var order = { high: 0, medium: 1, low: 2 };
+
+    var out = {
+      nav1: nav1, nav2: nav2, avgPct: all.length ? Math.round(all.filter(function (t) { return self.isDone(t); }).length / all.length * 100) : 0,
+      q: f.q, onQ: function (e) { self.setF('q', e.target.value); },
+      searchPlaceholder: view === 'project' ? t('searchProj', { k: cur.key }) : view === 'tasks' ? t('searchAll') : t('searchTasks'),
+      L: T[LANG], langLabel: t('langLabel'), toggleLang: function () { self.toggleLang(); },
+      catOptions: CATS.map(function (c) { return { v: c, label: catName(c) }; }),
+      projectsLine: t('projectsLine', { p: S.projects.length, t: all.length, u: peopleOf(all).length }),
+      reportsLine: t('reportsLine', { n: S.projects.length }),
+      lateN: lateAll.length, hasLate: lateAll.length > 0,
+      goOverdue: function () { self.go('tasks', { f: { q: '', assignee: '', late: true, cat: '', project: '', status: '' } }); },
+      goActive: function () { self.go('tasks', { f: { q: '', assignee: '', late: false, cat: '', project: '', status: 'In Progress' } }); },
+      goDone: function () { self.go('tasks', { f: { q: '', assignee: '', late: false, cat: '', project: '', status: 'Done' } }); },
+      goProjects: function () { self.go('projects'); },
+      newProject: function () { self.openProjectModal(null); },
+      newTask: function () { self.openTaskModal(null, null); },
+      isDashboard: view === 'dashboard', isProjects: view === 'projects', isProject: view === 'project', isTasks: view === 'tasks', isReports: view === 'reports',
+      cats: CATS, peopleNames: peopleNames,
+      nProjects: S.projects.length, nTasks: all.length, nPeople: peopleNames.length,
+      nProjectsActive: S.projects.filter(function (p) { return self.pTasks(p.id).some(function (t) { return !self.isDone(t); }); }).length,
+      nActive: all.filter(function (t) { return !self.isDone(t); }).length,
+      nProg: all.filter(function (t) { return t.status === 'In Progress'; }).length,
+      nTodo: all.filter(function (t) { return t.status === 'To Do'; }).length,
+      nDone: all.filter(function (t) { return self.isDone(t); }).length,
+      projectOptions: S.projects.map(function (p) { return { id: p.id, label: p.key + ' · ' + p.name }; }),
+      toast: S.toast, toastOn: !!S.toast, canUndo: !!S.undo, undo: function () { if (S.undo) S.undo(); },
+      confirmOpen: !!S.confirm, confirmTitle: S.confirm ? S.confirm.title : '', confirmText: S.confirm ? S.confirm.text : '',
+      cancelConfirm: function () { self.setState({ confirm: null }); }, doConfirm: function () { if (S.confirm) S.confirm.run(); },
+      closeModal: function () { self.setState({ modal: null, modalErr: '' }); },
+      modalErr: S.modalErr, modalErrOn: !!S.modalErr,
+      hasFilters: hasFilters, clearFilters: function () { self.setState({ f: { q: '', assignee: '', late: false, cat: '', project: '', status: '' } }); },
+      fcat: f.cat, onCat: function (e) { self.setF('cat', e.target.value); }, catChipStyle: chip(!!f.cat),
+      toggleLate: function () { self.setF('late', !f.late); }, lateChipStyle: chip(f.late) + (f.late ? ' background: #FFE3DC; color: #9A2E1B; border-color: #E2503B;' : ''),
+      fproject: f.project, onFProject: function (e) { self.setF('project', e.target.value); }, projChipStyle: chip(!!f.project),
+      fstatus: f.status, onFStatus: function (e) { self.setF('status', e.target.value); }, statusChipStyle: chip(!!f.status),
+      people: people,
+      mineOn: f.assignee === ME, toggleMine: function () { self.setF('assignee', f.assignee === ME ? '' : ME); }, mineChipStyle: chip(f.assignee === ME),
+      resetDemo: function () { self.resetDemo(); },
+      selN: Object.keys(S.sel).length, hasSel: Object.keys(S.sel).length > 0, clearSel: function () { self.setState({ sel: {} }); },
+      bulkStatus: S.bulkStatus, onBulkStatus: function (e) { self.setState({ bulkStatus: e.target.value }); }, bulkMove: function () { self.bulkMove(S.bulkStatus); }, bulkDelete: function () { self.bulkDelete(); },
+      heads: ['key', 'title', 'project', 'category', 'assignee', 'priority', 'due', 'status'].map(function (k) { var on = S.sortKey === k; return { k: k, label: t(k === 'title' ? 'taskCol' : k), sort: function () { self.sortBy(k); }, arrow: on ? (S.sortDir === 1 ? ' ↑' : ' ↓') : '', style: 'border: 0; background: none; padding: 0; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; font-weight: 400; white-space: nowrap; color: ' + (on ? '#4A3DBB' : '#6B6A72') + ';' }; })
+    };
+    out.heads1 = out.heads.filter(function (h) { return h.k !== 'project'; });
+    out.avgBarStyle = 'width: ' + out.avgPct + '%; height: 100%; background: #F7D84E; border-radius: 99px;';
+
+    if (view === 'dashboard') {
+      var h = new Date().getHours();
+      out.greeting = h < 12 ? t('goodMorning') : h < 18 ? t('goodAfternoon') : t('goodEvening');
+      out.todayLabel = new Date().toLocaleDateString(locale(), { weekday: 'long', month: 'long', day: 'numeric' });
+      var running = S.projects.filter(function (p) { return self.pTasks(p.id).some(function (t) { return t.status === 'In Progress'; }); }).length;
+      out.summaryLine = lateAll.length ? t('summaryLate', { n: lateAll.length, m: running }) : t('summaryOk', { m: running });
+      var oldest = lateAll.slice().sort(function (a, b) { return a.due.localeCompare(b.due); })[0];
+      out.lateHint = oldest ? t('oldestLate', { n: daysBetween(tod, oldest.due) }) : t('allOnTime');
+      out.projRows = S.projects.map(decoP); out.noProjects = S.projects.length === 0;
+      out.lateTasks = lateAll.slice().sort(function (a, b) { return a.due.localeCompare(b.due); }).map(function (t) { return self.deco(t); }); out.noLate = lateAll.length === 0;
+    }
+    if (view === 'projects') { out.projCards = S.projects.map(decoP); }
+    if (view === 'project') {
+      out.cur = decoP(cur);
+      out.switchProject = function (e) { self.openProject(e.target.value); };
+      out.editCur = function () { self.openProjectModal(cur); };
+      out.deleteCur = function () { self.askDeleteProject(cur.id); };
+      out.tabs = ['timeline', 'backlog', 'board', 'list'].map(function (id) { var on = S.tab === id; return { label: t(id), go: function () { self.setState({ tab: id }); }, style: 'padding: 8px 16px; border-radius: 10px; font-weight: 400; font-size: 14px; border: 0; ' + (on ? 'background: #6B5CE7; color: #FFFFFF;' : 'background: transparent; color: #6B6A72;') }; });
+      out.isBoard = S.tab === 'board'; out.isList = S.tab === 'list'; out.isBacklog = S.tab === 'backlog'; out.isTimeline = S.tab === 'timeline';
+      if (out.isBoard) {
+        out.cols = STATUSES.map(function (s) {
+          var items = filtered.filter(function (t) { return t.status === s; }).sort(function (a, b) { return (a.due || '9').localeCompare(b.due || '9'); });
+          var over = S.overCol === s;
+          return { name: stName(s), n: items.length, items: items, empty: items.length === 0,
+            style: 'display: flex; flex-direction: column; gap: 12px; border-radius: 22px; padding: 12px; min-width: 0; transition: background .15s; background: ' + (over ? '#ECE9FF' : '#EAEAF1') + ';',
+            dotStyle: 'width: 10px; height: 10px; border-radius: 50%; background: ' + SCOLOR[s] + ';',
+            add: function () { self.openTaskModal(s, cur.id); },
+            dragOver: function (e) { e.preventDefault(); if (S.overCol !== s) self.setState({ overCol: s }); },
+            dragLeave: function () { if (S.overCol === s) self.setState({ overCol: '' }); },
+            drop: function (e) { e.preventDefault(); var id = self.dragId; try { id = id || e.dataTransfer.getData('text/plain'); } catch (err) {} var t = self.task(id); self.dragId = null; self.setState({ overCol: '' }); if (t) self.setStatus(t, s); } };
+        });
+      }
+      if (out.isList) { out.listRows = this.sorted(filtered); out.listEmpty = out.listRows.length === 0; }
+      if (out.isBacklog) {
+        out.groups = STATUSES.map(function (s) { var items = filtered.filter(function (t) { return t.status === s; }).sort(function (a, b) { return order[a.priority] - order[b.priority] || (a.due || '9').localeCompare(b.due || '9'); });
+          return { name: stName(s), n: items.length, items: items, empty: items.length === 0, dotStyle: 'width: 10px; height: 10px; border-radius: 50%; background: ' + SCOLOR[s] + ';', add: function () { self.openTaskModal(s, cur.id); } }; });
+      }
+      if (out.isTimeline) {
+        var N = 35, start = addDays(-10);
+        var days = []; for (var i = 0; i < N; i++) { var d = addDays(i, start); var isT = d === tod; days.push({ label: new Date(d + 'T00:00:00').toLocaleDateString(locale(), { day: 'numeric', month: 'short' }), today: isT,
+          headStyle: 'font-size: 10px; text-align: center; padding: 8px 0; border-left: 1px solid #E4E4EC; white-space: nowrap; overflow: hidden; ' + (isT ? 'color: #4A3DBB; font-weight: 400; background: #FEF9E0;' : 'color: #6B6A72;'),
+          cellStyle: 'grid-row: 1; border-left: 1px solid #E4E4EC; ' + (isT ? 'background: #FEF9E0;' : '') }); }
+        out.days = days;
+        out.tlHeadStyle = 'display: grid; grid-template-columns: repeat(' + N + ', minmax(0, 1fr)); border-bottom: 1px solid #E4E4EC;';
+        out.tlTrackStyle = 'display: grid; grid-template-columns: repeat(' + N + ', minmax(0, 1fr)); border-bottom: 1px solid #E4E4EC; height: 50px;';
+        var idx = function (d) { return Math.max(0, Math.min(N - 1, daysBetween(d, start))); };
+        out.tlRows = filtered.slice().sort(function (a, b) { return (a.created || '').localeCompare(b.created || ''); }).map(function (t) {
+          var s = idx(t.created || tod), e = Math.max(s, idx(t.due || tod));
+          var bg = t.done ? 'background: #1E9E5A; color: #FFFFFF; border: 0;' : t.late ? 'background: #E2503B; color: #FFFFFF; border: 0;' : t.status === 'In Progress' ? 'background: #6B5CE7; color: #FFFFFF; border: 0;' : 'background: #FFFFFF; color: #17161A; border: 1.5px solid #8D8B95;';
+          return Object.assign({}, t, { barStyle: 'grid-column: ' + (s + 1) + ' / ' + (e + 2) + '; grid-row: 1; align-self: center; height: 28px; border-radius: 8px; display: flex; align-items: center; padding: 0 10px; font-size: 12px; font-weight: 400; white-space: nowrap; overflow: hidden; box-sizing: border-box; text-align: left; ' + bg,
+            barLabel: first(t.assignee) + (t.late ? ' · ' + t.lateLabel : t.done ? ' · ' + t_('doneBar') : '') });
+        });
+        out.tlEmpty = out.tlRows.length === 0;
+      }
+    }
+    if (view === 'tasks') { out.allRows = this.sorted(filtered); out.allRowsN = out.allRows.length; out.allEmpty = out.allRows.length === 0; out.tasksLine = t('tasksLine', { a: out.allRowsN, n: all.length }); }
+    if (view === 'reports') {
+      var by = function (fn) { var m = {}; all.forEach(function (t) { var k = fn(t); m[k] = (m[k] || 0) + 1; }); return m; };
+      var bars = function (title, obj, ord) { var rows = Object.keys(obj).map(function (k) { return { k: k, v: obj[k] }; }).sort(function (a, b) { return ord ? ord.indexOf(a.k) - ord.indexOf(b.k) : b.v - a.v; }); return { title: title, rows: rows.map(function (r) { return { k: r.k, v: r.v, barStyle: 'display: block; height: 100%; border-radius: 99px; background: #6B5CE7; width: ' + (all.length ? r.v / all.length * 100 : 0) + '%;' }; }) }; };
+      out.avgProjPct = S.projects.length ? Math.round(S.projects.reduce(function (a, p) { return a + self.prog(p.id); }, 0) / S.projects.length) : 0;
+      out.reportGroups = [bars(t('byProject'), by(function (x) { return (self.proj(x.projectId) || {}).name || t('noProject'); })), bars(t('byStatus'), by(function (x) { return stName(x.status); }), STATUSES.map(stName)), bars(t('byCategory'), by(function (x) { return catName(x.category); })), bars(t('byPriority'), by(function (x) { return t(x.priority); }), [t('high'), t('medium'), t('low')]), bars(t('byAssignee'), by(function (x) { return x.assignee || t('unassigned'); }))];
+    }
+
+    var ot = S.openId ? this.task(S.openId) : null;
+    out.drawerOpen = !!ot;
+    out.closeDrawer = function () { self.setState({ openId: null }); };
+    if (ot) {
+      var d = this.deco(ot);
+      var bind = function (k, after) { return function (e) { var v = e.target.value; if (ot[k] === v) return; if (k === 'status') self.setStatus(ot, v); else { if (k === 'assignee') self.log(ot, t('logAssigned', { u: ME, v: v || t('nobody') })); if (k === 'due') self.log(ot, t('logDue', { u: ME, d: fmt(v) })); if (k === 'priority') self.log(ot, t('logPriority', { u: ME, p: t(v) })); if (k === 'projectId') { var np = self.proj(v); if (np) { np.counter++; ot.key = np.key + '-' + np.counter; self.log(ot, t('logProject', { u: ME, p: np.name })); } } ot[k] = v; self.commit(); } }; };
+      out.dt = Object.assign(d, {
+        dueStyle: d.dueStyle.replace('margin-left: auto;', ''),
+        onTitle: bind('title'), onDesc: bind('desc'), onAssignee: bind('assignee'), onPriority: bind('priority'), onType: bind('type'), onCategory: bind('category'), onDue: bind('due'), onProject: bind('projectId'),
+        dueInputStyle: 'border-radius: 12px; padding: 9px 12px; font-size: 14px; font-weight: 400; color: #17161A; ' + (d.late ? 'border: 1.5px solid #E2503B; background: #FFE3DC;' : 'border: 1px solid #E4E4EC; background: #FFFFFF;'),
+        statusBtns: STATUSES.map(function (s) { var on = ot.status === s; return { name: stName(s), set: function () { self.setStatus(ot, s); }, style: 'flex: 1; padding: 7px 4px; border-radius: 9px; border: 0; font-weight: 400; font-size: 12px; white-space: nowrap; ' + (on ? 'background: ' + SCOLOR[s] + '; color: #FFFFFF;' : 'background: transparent; color: #6B6A72;') }; }),
+        checklist: (ot.checklist || []).map(function (c) { return { text: c.text, done: c.done, textStyle: 'flex: 1; min-width: 0; overflow-wrap: anywhere; ' + (c.done ? 'color: #6B6A72; text-decoration: line-through;' : 'font-weight: 500;'),
+          toggle: function () { c.done = !c.done; self.commit(); }, remove: function () { ot.checklist = ot.checklist.filter(function (x) { return x !== c; }); self.commit(); } }; }),
+        comments: (ot.comments || []).map(function (c) { return { by: c.by, text: c.text, at: fmtAt(c.at), ini: ini(c.by), avStyle: 'width: 34px; height: 34px; border-radius: 50%; background: ' + colorOf(c.by) + '; color: #FFFFFF; display: grid; place-items: center; font-size: 11px; font-weight: 400; flex: 0 0 auto;' }; }),
+        activity: (ot.activity || []).map(function (a) { return { at: fmtAt(a.at), text: a.text }; }),
+        duplicate: function () { var p = self.proj(ot.projectId); p.counter++; var c = JSON.parse(JSON.stringify(ot)); c.id = uid(); c.key = p.key + '-' + p.counter; c.title = ot.title + ' ' + t('copy'); c.status = 'To Do'; c.created = tod; c.comments = []; c.activity = [{ at: new Date().toISOString(), text: t('logDuplicated', { k: ot.key, u: ME }) }]; c.checklist.forEach(function (x) { x.id = uid(); x.done = false; }); self.state.tasks.unshift(c); self.commit({ openId: c.id }); self.say(c.key + ' ' + t('createdT')); },
+        del: function () { self.askDeleteTask(ot.id); }
+      });
+      out.newCheck = S.newCheck; out.onNewCheck = function (e) { self.setState({ newCheck: e.target.value }); };
+      var addCheck = function () { var v = (S.newCheck || '').trim(); if (!v) return; ot.checklist.push({ id: uid(), text: v, done: false }); self.commit({ newCheck: '' }); };
+      out.addCheck = addCheck; out.checkKey = function (e) { if (e.key === 'Enter') { e.preventDefault(); addCheck(); } };
+      out.newComment = S.newComment; out.onNewComment = function (e) { self.setState({ newComment: e.target.value }); };
+      out.addComment = function () { var v = (S.newComment || '').trim(); if (!v) return; ot.comments.push({ id: uid(), by: ME, text: v, at: new Date().toISOString() }); self.log(ot, t('logCommented', { u: ME })); self.commit({ newComment: '' }); };
+    } else {
+      out.dt = {}; out.newCheck = ''; out.newComment = ''; out.onNewCheck = function () {}; out.addCheck = function () {}; out.checkKey = function () {}; out.onNewComment = function () {}; out.addComment = function () {};
+    }
+
+    out.taskModalOpen = S.modal === 'task' && !!S.draft;
+    if (out.taskModalOpen) {
+      var dr = S.draft; var dset = function (k) { return function (e) { var nd = Object.assign({}, S.draft); nd[k] = e.target.value; self.setState({ draft: nd, modalErr: '' }); }; };
+      out.draft = dr; out.dTitle = dset('title'); out.dDesc = dset('desc'); out.dProject = dset('projectId'); out.dStatus = dset('status'); out.dType = dset('type'); out.dPriority = dset('priority'); out.dCategory = dset('category'); out.dAssignee = dset('assignee'); out.dDue = dset('due');
+      out.saveTask = function () { self.saveTask(); };
+    } else { out.draft = {}; }
+    out.projectModalOpen = S.modal === 'project' && !!S.pdraft;
+    if (out.projectModalOpen) {
+      var pd = S.pdraft; var pset = function (k) { return function (e) { var nd = Object.assign({}, S.pdraft); nd[k] = e.target.value; self.setState({ pdraft: nd, modalErr: '' }); }; };
+      out.pdraft = pd; out.pKey = pset('key'); out.pName = pset('name'); out.pDesc = pset('desc');
+      out.projectModalTitle = pd.editing ? t('editProject') : t('newProject'); out.projectModalCta = pd.editing ? t('saveChanges') : t('createProject');
+      out.saveProject = function () { self.saveProject(); }; out.deleteDraftProject = function () { self.askDeleteProject(pd.id); };
+    } else { out.pdraft = {}; }
+    return out;
+  }
+}
+</script>
+</body>
+</html>

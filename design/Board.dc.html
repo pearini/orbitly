@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Orbitly Project Board</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F4F8}
+a{color:#17161A;text-decoration:none}a:hover{color:#17161A}
+.nav{transition:background .15s}.nav:hover{background:rgba(255,255,255,.08)}
+.btn:hover{filter:brightness(.96)}
+.card{transition:transform .15s, box-shadow .15s}.card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(23,22,26,.08)}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 100vh; background: #F4F4F8; font-family: 'Poppins', system-ui, sans-serif; color: #17161A; font-size: 14px; line-height: 1.5">
+
+  <aside style="flex: 0 0 248px; background: #4A3DBB; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 10px 22px">
+      <div style="width: 32px; height: 32px; border-radius: 10px; background: #F7D84E; display: grid; place-items: center">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17161A" stroke-width="2.2"><circle cx="12" cy="12" r="4"></circle><path d="M3 12a9 9 0 0 1 18 0"></path></svg>
+      </div>
+      <span style="font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 20px; letter-spacing: -0.02em">Orbitly</span>
+    </div>
+    <div style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #C9C4F5; padding: 4px 12px 8px; font-weight: 400">Overview</div>
+    <a href="Main.dc.html" class="nav" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; color: #E6E3FA; font-weight: 500; font-size: 15px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="8" height="8" rx="2"></rect><rect x="13" y="3" width="8" height="5" rx="2"></rect><rect x="13" y="11" width="8" height="10" rx="2"></rect><rect x="3" y="14" width="8" height="7" rx="2"></rect></svg>
+      <span>Dashboard</span>
+      <span style="margin-left: auto; background: #E2503B; color: #FFFFFF; font-size: 11px; font-weight: 400; border-radius: 99px; padding: 2px 8px">4</span>
+    </a>
+    <div style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #C9C4F5; padding: 16px 12px 8px; font-weight: 400">Work</div>
+    <a href="Projects.dc.html" class="nav" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; color: #E6E3FA; font-weight: 500; font-size: 15px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      <span>Projects</span>
+    </a>
+    <a href="Board.dc.html" class="nav" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; background: rgba(255,255,255,.1); color: #FFFFFF; font-weight: 400; font-size: 15px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F7D84E" stroke-width="1.9"><rect x="3" y="4" width="5" height="16" rx="1.5"></rect><rect x="10" y="4" width="5" height="11" rx="1.5"></rect><rect x="17" y="4" width="4" height="7" rx="1.5"></rect></svg>
+      <span>Boards</span>
+    </a>
+    <a href="Timeline.dc.html" class="nav" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; color: #E6E3FA; font-weight: 500; font-size: 15px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 7h10M3 12h16M3 17h7"></path></svg>
+      <span>Timeline</span>
+    </a>
+    <a href="Board.dc.html" class="nav" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; color: #E6E3FA; font-weight: 500; font-size: 15px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 12l3 3 5-6"></path></svg>
+      <span>Tasks</span>
+    </a>
+    <a href="Main.dc.html" class="nav" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; color: #E6E3FA; font-weight: 500; font-size: 15px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+      <span>Reports</span>
+    </a>
+    <div style="flex: 1"></div>
+    <div style="display: flex; align-items: center; gap: 10px; padding: 14px 8px 2px">
+      <span style="width: 36px; height: 36px; border-radius: 50%; background: #6B5CE7; display: grid; place-items: center; font-size: 12px; font-weight: 400">EJ</span>
+      <div style="display: flex; flex-direction: column; line-height: 1.2">
+        <span style="font-weight: 400; font-size: 14px">Emma Johnson</span>
+        <span style="font-size: 12px; color: #C9C4F5">Product lead</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px 36px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+
+    <nav aria-label="Breadcrumb" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #6B6A72">
+      <a href="Projects.dc.html" style="color: #6B6A72">Projects</a>
+      <span>/</span>
+      <span style="color: #17161A; font-weight: 400">Nova Mobile App</span>
+    </nav>
+
+    <header style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap">
+      <span style="width: 56px; height: 56px; border-radius: 16px; background: #F7D84E; display: grid; place-items: center; font-size: 14px">NOVA</span>
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+        <h1 style="margin: 0; font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 36px; letter-spacing: -0.03em; line-height: 1.05">Nova Mobile App</h1>
+        <span style="color: #6B6A72; font-size: 14px">Rebuild of the Nova customer app for iOS and Android · 8 tasks · 5 people</span>
+      </div>
+      <div style="flex: 1"></div>
+      <div style="display: flex; align-items: center">
+        <span style="width: 34px; height: 34px; border-radius: 50%; background: #6B5CE7; color: #FFFFFF; display: grid; place-items: center; font-size: 11px; font-weight: 400; border: 2px solid #F4F4F8" title="Emma Johnson">EJ</span>
+        <span style="width: 34px; height: 34px; border-radius: 50%; background: #6B4EA8; color: #FFFFFF; display: grid; place-items: center; font-size: 11px; font-weight: 400; border: 2px solid #F4F4F8; margin-left: -8px" title="James Smith">JS</span>
+        <span style="width: 34px; height: 34px; border-radius: 50%; background: #C76B2A; color: #FFFFFF; display: grid; place-items: center; font-size: 11px; font-weight: 400; border: 2px solid #F4F4F8; margin-left: -8px" title="Michael Davis">MD</span>
+        <span style="width: 34px; height: 34px; border-radius: 50%; background: #3F7A7D; color: #FFFFFF; display: grid; place-items: center; font-size: 11px; font-weight: 400; border: 2px solid #F4F4F8; margin-left: -8px" title="Sarah Wilson">SW</span>
+        <span style="width: 34px; height: 34px; border-radius: 50%; background: #B23B3B; color: #FFFFFF; display: grid; place-items: center; font-size: 11px; font-weight: 400; border: 2px solid #F4F4F8; margin-left: -8px" title="Olivia Brown">OB</span>
+      </div>
+      <button class="btn" style="height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #E4E4EC; background: #FFFFFF; font: inherit; font-weight: 400; font-size: 14px; cursor: pointer; color: #17161A">Share</button>
+      <button class="btn" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 14px; border: 0; background: #F7D84E; font: inherit; font-weight: 400; font-size: 14px; cursor: pointer; color: #17161A">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"></path></svg>
+        Create
+      </button>
+    </header>
+
+    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+      <nav aria-label="Project views" style="display: inline-flex; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 14px; padding: 4px; gap: 2px">
+        <a href="Timeline.dc.html" style="padding: 8px 16px; border-radius: 10px; font-weight: 400; font-size: 14px; color: #6B6A72">Timeline</a>
+        <a href="Board.dc.html" style="padding: 8px 16px; border-radius: 10px; font-weight: 400; font-size: 14px; color: #6B6A72">Backlog</a>
+        <a href="Board.dc.html" style="padding: 8px 16px; border-radius: 10px; font-weight: 400; font-size: 14px; background: #6B5CE7; color: #FFFFFF">Board</a>
+        <a href="Board.dc.html" style="padding: 8px 16px; border-radius: 10px; font-weight: 400; font-size: 14px; color: #6B6A72">List</a>
+      </nav>
+      <div style="flex: 1"></div>
+      <label style="display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E4E4EC; border-radius: 14px; padding: 9px 14px; width: 240px; color: #6B6A72; box-sizing: border-box">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input type="search" placeholder="Search board" style="border: 0; outline: 0; background: transparent; font: inherit; font-size: 14px; flex: 1; color: #17161A; min-width: 0">
+      </label>
+      <button class="btn" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 14px; border-radius: 14px; border: 1px solid #E4E4EC; background: #FFFFFF; font: inherit; font-weight: 400; font-size: 14px; cursor: pointer; color: #17161A">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>
+        Category
+      </button>
+      <button class="btn" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 14px; border-radius: 14px; border: 1.5px solid #E2503B; background: #FFE3DC; font: inherit; font-weight: 400; font-size: 14px; cursor: pointer; color: #9A2E1B">Overdue · 2</button>
+    </div>
+
+    <div style="overflow-x: auto; padding-bottom: 8px">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(300px, 1fr)); gap: 18px; align-items: start; min-width: min-content">
+
+        <section aria-label="To do" style="display: flex; flex-direction: column; gap: 12px; background: #EAEAF1; border-radius: 22px; padding: 12px; min-width: 0">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 2px">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #8D8B95"></span>
+            <span style="font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 16px">To do</span>
+            <span style="font-size: 12px; color: #6B6A72">4</span>
+            <button aria-label="Add task to To do" style="margin-left: auto; width: 32px; height: 32px; border-radius: 10px; border: 0; background: transparent; color: #6B6A72; cursor: pointer; display: grid; place-items: center">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+            </button>
+          </div>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05)">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-5</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #FFE3DC; color: #9A2E1B; border-radius: 6px; padding: 2px 7px">Bug</span>
+              <span style="margin-left: auto; font-size: 12px; font-weight: 400; color: #E2503B">1d late</span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35">"Log time" button missing from Timesheets page</p>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #DDF3FF; color: #0B5C8A; border-radius: 8px; padding: 4px 10px">Timesheets</span>
+              <span style="font-size: 12px; font-weight: 400; background: #FFE3DC; color: #9A2E1B; border-radius: 8px; padding: 4px 10px">High</span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #3F7A7D; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="Sarah Wilson">SW</span>
+            </div>
+          </a>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05)">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-7</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #ECE9FF; color: #4A3DBB; border-radius: 6px; padding: 2px 7px">Task</span>
+              <span style="margin-left: auto; font-size: 12px; color: #6B6A72">Nov 8</span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35">Design the home screen widgets</p>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #DFF7E8; color: #135E36; border-radius: 8px; padding: 4px 10px">Design</span>
+              <span style="font-size: 12px; font-weight: 400; background: #FFF1C2; color: #6A4E00; border-radius: 8px; padding: 4px 10px">Medium</span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #C76B2A; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="Michael Davis">MD</span>
+            </div>
+          </a>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05)">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-1</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #FFE3DC; color: #9A2E1B; border-radius: 6px; padding: 2px 7px">Bug</span>
+              <span style="margin-left: auto; font-size: 12px; color: #6B6A72">Nov 13</span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35">Upgrade Subscription modal shows conflicting seat requirements</p>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #FFF1C2; color: #6A4E00; border-radius: 8px; padding: 4px 10px">Billing</span>
+              <span style="font-size: 12px; font-weight: 400; background: #FFF1C2; color: #6A4E00; border-radius: 8px; padding: 4px 10px">Medium</span>
+              <span style="font-size: 12px; color: #6B6A72; display: inline-flex; align-items: center; gap: 4px">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 12l3 3 5-6"></path></svg>0/2
+              </span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #6B4EA8; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="James Smith">JS</span>
+            </div>
+          </a>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05)">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-2</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #FFE3DC; color: #9A2E1B; border-radius: 6px; padding: 2px 7px">Bug</span>
+              <span style="margin-left: auto; font-size: 12px; color: #6B6A72">Nov 16</span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35">User Roles section in Settings shows blank on limited plans</p>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #ECE9FF; color: #4A3DBB; border-radius: 8px; padding: 4px 10px">Product</span>
+              <span style="font-size: 12px; font-weight: 400; background: #FFF1C2; color: #6A4E00; border-radius: 8px; padding: 4px 10px">Medium</span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #B23B3B; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="Olivia Brown">OB</span>
+            </div>
+          </a>
+
+          <button style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 12px 14px; border-radius: 14px; border: 1.5px dashed #C9C7CF; background: transparent; font: inherit; font-weight: 400; font-size: 14px; color: #6B6A72; cursor: pointer; box-sizing: border-box">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+            Add a task
+          </button>
+        </section>
+
+        <section aria-label="In progress" style="display: flex; flex-direction: column; gap: 12px; background: #EAEAF1; border-radius: 22px; padding: 12px; min-width: 0">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 2px">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #6B5CE7"></span>
+            <span style="font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 16px">In progress</span>
+            <span style="font-size: 12px; color: #6B6A72">3</span>
+            <button aria-label="Add task to In progress" style="margin-left: auto; width: 32px; height: 32px; border-radius: 10px; border: 0; background: transparent; color: #6B6A72; cursor: pointer; display: grid; place-items: center">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+            </button>
+          </div>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05); outline: 2px solid #17161A">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-6</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #ECE9FF; color: #4A3DBB; border-radius: 6px; padding: 2px 7px">Task</span>
+              <span style="margin-left: auto; font-size: 12px; font-weight: 400; color: #E2503B">3d late</span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35">Write user stories for the onboarding flow</p>
+            <div style="height: 6px; border-radius: 99px; background: #F4F4F8; overflow: hidden"><span style="display: block; width: 33%; height: 100%; background: #6B5CE7; border-radius: 99px"></span></div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #ECE9FF; color: #4A3DBB; border-radius: 8px; padding: 4px 10px">Product</span>
+              <span style="font-size: 12px; font-weight: 400; background: #FFE3DC; color: #9A2E1B; border-radius: 8px; padding: 4px 10px">High</span>
+              <span style="font-size: 12px; color: #6B6A72; display: inline-flex; align-items: center; gap: 4px">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 12l3 3 5-6"></path></svg>1/3
+              </span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #6B5CE7; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="Emma Johnson">EJ</span>
+            </div>
+          </a>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05)">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-3</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #ECE9FF; color: #4A3DBB; border-radius: 6px; padding: 2px 7px">Task</span>
+              <span style="margin-left: auto; font-size: 12px; color: #6B6A72">Nov 7</span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35">Synchronize system autosave with payment webhooks</p>
+            <div style="height: 6px; border-radius: 99px; background: #F4F4F8; overflow: hidden"><span style="display: block; width: 33%; height: 100%; background: #6B5CE7; border-radius: 99px"></span></div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #FFF1C2; color: #6A4E00; border-radius: 8px; padding: 4px 10px">Billing</span>
+              <span style="font-size: 12px; font-weight: 400; background: #FFE3DC; color: #9A2E1B; border-radius: 8px; padding: 4px 10px">High</span>
+              <span style="font-size: 12px; color: #6B6A72; display: inline-flex; align-items: center; gap: 4px">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 12l3 3 5-6"></path></svg>1/3
+              </span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #6B5CE7; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="Emma Johnson">EJ</span>
+            </div>
+          </a>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05)">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-4</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #ECE9FF; color: #4A3DBB; border-radius: 6px; padding: 2px 7px">Task</span>
+              <span style="margin-left: auto; font-size: 12px; color: #6B6A72">Nov 10</span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35">CV Builder: datepicker standardization and download fixes</p>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #ECE9FF; color: #4A3DBB; border-radius: 8px; padding: 4px 10px">Product</span>
+              <span style="font-size: 12px; font-weight: 400; background: #FFF1C2; color: #6A4E00; border-radius: 8px; padding: 4px 10px">Medium</span>
+              <span style="font-size: 12px; color: #6B6A72; display: inline-flex; align-items: center; gap: 4px">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 21l1.8-5.5A8 8 0 1 1 21 12z"></path></svg>1
+              </span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #C76B2A; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="Michael Davis">MD</span>
+            </div>
+          </a>
+
+          <button style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 12px 14px; border-radius: 14px; border: 1.5px dashed #C9C7CF; background: transparent; font: inherit; font-weight: 400; font-size: 14px; color: #6B6A72; cursor: pointer; box-sizing: border-box">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+            Add a task
+          </button>
+        </section>
+
+        <section aria-label="Done" style="display: flex; flex-direction: column; gap: 12px; background: #EAEAF1; border-radius: 22px; padding: 12px; min-width: 0">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 2px">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #1E9E5A"></span>
+            <span style="font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 16px">Done</span>
+            <span style="font-size: 12px; color: #6B6A72">1</span>
+            <button aria-label="Add task to Done" style="margin-left: auto; width: 32px; height: 32px; border-radius: 10px; border: 0; background: transparent; color: #6B6A72; cursor: pointer; display: grid; place-items: center">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg>
+            </button>
+          </div>
+
+          <a href="TaskDetail.dc.html" class="card" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(23,22,26,.05); opacity: .8">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 12px; color: #6B6A72">NOVA-8</span>
+              <span style="font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; background: #ECE9FF; color: #4A3DBB; border-radius: 6px; padding: 2px 7px">Task</span>
+              <span style="margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 400; color: #1E9E5A">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-10"></path></svg>Done
+              </span>
+            </div>
+            <p style="margin: 0; font-weight: 400; font-size: 15px; line-height: 1.35; color: #6B6A72; text-decoration: line-through">Prepare release notes v2.0</p>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span style="font-size: 12px; font-weight: 400; background: #FFE3DC; color: #9A2E1B; border-radius: 8px; padding: 4px 10px">Marketing</span>
+              <span style="font-size: 12px; font-weight: 400; background: #DFF7E8; color: #135E36; border-radius: 8px; padding: 4px 10px">Low</span>
+              <span style="margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: #6B5CE7; color: #FFFFFF; display: grid; place-items: center; font-size: 10px; font-weight: 400" title="Emma Johnson">EJ</span>
+            </div>
+          </a>
+
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 36px 16px; text-align: center; color: #6B6A72; font-size: 13px">
+            <svg aria-hidden="true" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C9C7CF" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M8 12l3 3 5-6"></path></svg>
+            Drop cards here when they ship
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
